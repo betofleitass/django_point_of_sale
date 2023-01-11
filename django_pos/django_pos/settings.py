@@ -56,6 +56,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "django_pos.urls"
+LOGIN_URL = '/accounts/login/'
+# Route defined in authentication/urls.py
+LOGIN_REDIRECT_URL = "authentication:home"
+# Route defined in authentication/urls.py
+LOGOUT_REDIRECT_URL = "authentication:login"
 
 # ROOT dir for templates
 TEMPLATE_DIR = os.path.join(CORE_DIR, "templates")
