@@ -34,24 +34,45 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th style="width:7%">#</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th class="text-center" style="width:15%">Status</th>
+                            <th class="text-center" style="width:15%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for c in categories %}
                         <tr>
-                            <td>1</td>
-                            <td>Cans</td>
-                            <td>Cans category</td>
-                            <td>Active</td>
-                            <td>Update, Delete</td>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{c.name}}</td>
+                            <td>{{c.description}}</td>
+                            {% if c.status == "ACTIVE" %}
+                            <td class="text-center">
+                                <span class="badge badge-success" style="font-size:0.8em;">{{c.status}}</span>
+                            </td>
+                            {% elif c.status == "INACTIVE" %}
+                            <td class="text-center">
+                                <span class="badge badge-danger" style="font-size:0.8em;">{{c.status}}</span>
+                            </td>
+                            {% endif %}
+                            <td class="text-center">
+                                <a href="#" class="text-decoration-none">
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Update category">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </a>
+                                <a href="#" class="text-decoration-none">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete category">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

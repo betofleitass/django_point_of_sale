@@ -19,11 +19,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="inputDescription">Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Drinks...">
+                        <input type="text" class="form-control" name="name" placeholder="Drinks..." required>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="state">State</label>
-                        <select name="state" class="form-control">
+                        <select name="state" class="form-control" required>
                             {% for status in category_status %}
                             <option value="{{status.0}}">{{status.1}}</option>
                             {% endfor %}
@@ -34,7 +34,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputDescription">Description 2</label>
-                        <input type="text" name="description" class="form-control" placeholder="Drinks and beverages..">
+                        <input type="text" name="description" class="form-control" placeholder="Drinks and beverages.." required>
                     </div>
                 </div>
                
