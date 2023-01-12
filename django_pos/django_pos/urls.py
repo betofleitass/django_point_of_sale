@@ -4,6 +4,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Authentication: Login and Logout
     path('', include('authentication.urls')),
+    # Index
     path('', include('pos.urls')),
+    # Products
+    path('products/', include('products.urls')),
 ]

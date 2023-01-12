@@ -1,0 +1,48 @@
+{% extends "pos/base.html" %}
+
+<!-- Page title  -->
+{% block title %}Add category{% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+<!-- Page Heading -->
+{% block heading %}Add category{% endblock heading %}
+
+<!-- Page content  -->
+{% block content %}
+<div class="row">
+    <div class="card col-md-8">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="inputDescription">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Drinks...">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">State</label>
+                        <select id="inputState" class="form-control">
+                            <option value="inactive">Active</option>
+                            <option value="active">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputDescription">Description 2</label>
+                        <input type="text" name="description" class="form-control" placeholder="Drinks and beverages..">
+                    </div>
+                </div>
+               
+                <button type="submit" class="btn btn-primary">Create category</button>
+               
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
