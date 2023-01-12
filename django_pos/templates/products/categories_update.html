@@ -1,31 +1,37 @@
 {% extends "pos/base.html" %}
 
 <!-- Page title  -->
-{% block title %}Add category{% endblock title %}
+{% block title %}Update category{% endblock title %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 <!-- Page Heading -->
-{% block heading %}Add category{% endblock heading %}
+{% block heading %}Update category{% endblock heading %}
 
 <!-- Page content  -->
 {% block content %}
 <div class="row">
     <div class="card col-md-8">
         <div class="card-body">
-            <form action="{% url 'products:categories_add' %}"  method="post">
+            <form action="{% url 'products:categories_update' category.id %}"  method="post">
                 {% csrf_token %}
                 <div class="form-row">
+                    
                     <div class="form-group col-md-8">
                         <label for="inputDescription">Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Drinks..." required>
+                        <input type="text" class="form-control" name="name" value="{{category.name}}" required>
                     </div>
+                    
                     <div class="form-group col-md-4">
                         <label for="state">State</label>
                         <select name="state" class="form-control" required>
                             {% for status in category_status %}
-                            <option value="{{status.0}}">{{status.1}}</option>
+                                {% if status.0 == category.status %}
+                                <option value="{{status.0}}" selected>{{status.1}}</option>
+                                {% else %}
+                                <option value="{{status.0}}">{{status.1}}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -34,11 +40,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputDescription">Description</label>
-                        <input type="text" name="description" class="form-control" placeholder="Drinks and beverages.." required>
+                        <input type="text" name="description" class="form-control" value="{{category.description}}" required>
                     </div>
                 </div>
                
-                <button type="submit" class="btn btn-success font-weight-bold">Create category</button>
+                <button type="submit" class="btn btn-success font-weight-bold">Update category</button>
                
             </form>
         </div>

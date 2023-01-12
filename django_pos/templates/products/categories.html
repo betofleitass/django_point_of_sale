@@ -18,11 +18,9 @@
     <!--Create new category-->
     <div class="row ml-0 mb-3">
         <a href="{% url 'products:categories_add' %}">
-            <button type="button" class="btn btn-primary">
-                
+            <button type="button" class="btn btn-success font-weight-bold">
                     <i class="fas fa-plus mr-2"></i>
                     Create new category
-                
             </button>
         </a>
     </div>
@@ -61,7 +59,7 @@
                             {% endif %}
                             <td class="text-center">
                                 <!--Update-->
-                                <a href="#" class="text-decoration-none">
+                                <a href="{% url 'products:categories_update' c.id %}" class="text-decoration-none">
                                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Update category">
                                         <i class="fas fa-pen"></i>
                                     </button>
