@@ -8,4 +8,7 @@ urlpatterns = [
     path('categories', views.CategoriesListView, name='categories_list'),
     # Add category
     path('categories/add', views.CategoriesAddView, name='categories_add'),
+    # Delete category
+    path('categories/delete/<str:category_id>',
+         views.CategoriesDeleteView, name='categories_delete'),
 ]

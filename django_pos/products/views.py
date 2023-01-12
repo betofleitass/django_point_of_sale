@@ -47,3 +47,17 @@ def CategoriesAddView(request):
         return redirect('products:categories_list')
 
     return render(request, "products/categories_add.html", context=context)
+
+
+@login_required(login_url="/accounts/login/")
+def CategoriesDeleteView(request, category_id):
+    """
+    Args:
+        category_id : The category's ID that will be deleted
+    """
+    # Get the category to delete
+    category = Category.objects.get(id=category_id)
+    category.delete()
+    messages.success(request, '¡Category: ' + category.name +
+                     ' deleted!', extra_tags="success")
+    return redirect('products:categories_list')
