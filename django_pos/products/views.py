@@ -7,7 +7,8 @@ from .models import Category
 @login_required(login_url="/accounts/login/")
 def CategoriesListView(request):
     context = {
-        "active_icon": "products_categories"
+        "active_icon": "products_categories",
+        "categories": Category.objects.all()
     }
     return render(request, "products/categories.html", context=context)
 
@@ -23,21 +24,26 @@ def CategoriesAddView(request):
         # Save the POST arguements
         data = request.POST
 
-        name = data['name']
-        status = data['state']
-        description = data['description']
+        attributes = {
+            "name": data['name'],
+            "status": data['state'],
+            "description": data['description']
+        }
+
+        # Check if a category with the same attributes exists
+        if Category.objects.filter(**attributes).exists():
+            messages.error(request, 'Category already exists!',
+                           extra_tags="warning")
+            return redirect('products:categories_add')
 
         # Create the category
-        new_category = Category.objects.create(
-            name=name,
-            status=status,
-            description=description
-        )
+        new_category = Category.objects.create(**attributes)
 
+        # If it doesn't exists save it
         new_category.save()
 
         messages.success(request, 'Category: ' +
-                         name + ' created succesfully!', extra_tags="success")
+                         attributes["name"] + ' created succesfully!', extra_tags="success")
         return redirect('products:categories_list')
 
     return render(request, "products/categories_add.html", context=context)
