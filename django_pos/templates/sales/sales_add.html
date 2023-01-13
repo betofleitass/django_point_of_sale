@@ -1,13 +1,17 @@
 {% extends "pos/base.html" %}
-
+{% load static %}
 <!-- Page title  -->
 {% block title %}Add sale{% endblock title %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<!--Select2 CSS Y JS-->
+<!-- Datatables -->
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css ' %}" rel="stylesheet">
+<!--Select2 CSS-->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+<!--Bootstrap Touchspin-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.css' %}">
 {% endblock stylesheets %}
 
 <!-- Page Heading -->
@@ -39,19 +43,14 @@
                             <div class="form-group">
                                 <label>Search product:</label>
                                 <div class="input-group">
-                                    <input name="searchbox_products" id="searchbox_products" class="form-control">
-                                    <span class="input-group-append">
-                                    <button type = "button" class="btn btn-danger btn-flat deleteProductSearch">
-                                        <i class="fas fa-times sm"></i>
-                                    </button>
-                                    </span>
+                                    <select class="form-control select2" name="searchbox_products" id="searchbox_products"></select>
                                 </div>
                             </div>
                             <!--End Search product-->
 
                             <!--Products table-->
                             <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap" id="tabla_productos">
+                                <table class="table table-hover text-nowrap" id="table_products">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -95,7 +94,7 @@
                             <div class="form-group">
                                 <label>Tax Inclusive (%)</label>
                                 <div class="input-group">
-                                    <input name="tax_percentage" class="form-control" required>
+                                    <input name="tax_percentage" class="form-control" value=0 required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -133,17 +132,120 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<!-- Datatables -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
 <!--Select2-->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+<!--Bootstrap Touchspin-->
+<script src="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.js' %}"></script>
 
 <script>
     
     $(document).ready(function() {
+        //Tax percentage touchspin
+        $("input[name='tax_percentage']").TouchSpin({
+            min: 0,
+            max: 100,
+            step: 1,
+            decimals: 2,
+            boostat: 5,
+            maxboostedstep: 10,
+            postfix: '%'
+        });
+
+
         //Select2 customers
         $('#searchbox_customers').select2({
             placeholder: "Select a customer",
             allowClear: true,
         });
+
+        //Variable for product number in table
+        var number = 1;
+
+        //Variable to store sale details and products
+        var sale = {
+            items: {
+                customer : "", 
+                sub_total : 0.00, 
+                grand_total : 0.00, 
+                tax_amount : 0.00, 
+                tax_percentage : 0.00, 
+                amount_payed : 0.00, 
+                amount_change : 0.00,
+                products: [
+
+                ]
+            },
+            // Adds a product to the sale object
+            add_product: function (item) {
+                this.items.products.push(item);
+                this.list_product();
+            },
+            // Shows the selected product in the table
+            list_product: function () {
+                // Calcumos la factura
+                //this.calcular_factura();
+
+                tblProducts = $("#table_products").DataTable({
+                    destroy: true,
+                    data: this.items.products,
+                    columns: [
+                        {"data": "number"}, 
+                        {"data": "name"},
+                        {"data": "price"},
+                        {"data": "quantity"},
+                        {"data": "subtotal"},
+                        {"data": "id"},
+                    ],
+                    columnDefs: [
+                        {
+                            // Quantity
+                            class: 'text-center',
+                            targets: [3], 
+                            render: function (data, type, row){
+                                return '<input name="quantity" type="text" class="form-control form-control-xs text-center" autocomplete="off" value="'+row.quantity+'">';
+                            },                      
+                        },
+                        {
+                            //Product price an total
+                            class: 'text-right',
+                            targets: [2,4],
+                            render: function (data, type, row){
+                              return data + ' $';
+                            },
+                        },
+                        {
+                            //Delete button
+                            class: 'text-center',
+                            targets: [-1],
+                            orderable: false,
+                            render: function (data, type, row){
+                                return '<a rel="delete" type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Delete product"> <i class="fas fa-trash-alt fa-xs"></i> </a>';
+                            },
+                        },
+
+                    ],
+                    rowCallback(row, data, displayNun, displayIndex, dataIndex){
+                        $(row).find(("input[name='quantity']")).TouchSpin({
+                            min: 1,
+                            max: 100, //Máximo de acuerdo al stock de cada producto
+                            step: 1,
+                            decimals: 0,
+                            boostat: 1,
+                            maxboostedstep: 3,
+                            postfix: ''
+                        });
+                    },
+                })
+                
+                // IDs de productos ya seleccionados para exlcuir en la busqueda
+                //console.log("this.traer_ids()");
+                //console.log(this.traer_ids());
+                
+            },
+        }
 
 
         //Select2 products searchbox
@@ -187,32 +289,34 @@
                 },
             }
             }).on('select2:select', function (e) {
-                //Cada vez que un producto buscado es seleccionado
-                alert("X")
-                /*
+                //When a product is selected from the searchbox
                 var data = e.params.data;
-                console.log("Producto seleccionado con select2");
-                console.log(data);
-                //Variable para el numero de producto en la tabla
-                var nro = 1;
-
-                //Agregamos nro, subtotal y cantidad del producto al diccionario
-                data.nro = nro;
-                nro++; //Aumentamos el nro de producto de la tabla;
+                //Add number, subtotal and quantity of the product to the dictionary
+                data.number = number;
+                number++; //Increase the product number in the table
                 data.subtotal = 0;
-                data.cant = 1;
-                //Agregamos al objeto de venta el producto
-                venta.add(data);
-                console.log(venta.items);      
-                //Limpiamos la barra de busqueda luego de Seleccionador
-                $(this).val('').trigger('change.select2');; */ 
+                data.quantity = 1;
+                //Add the product to the sale object
+                sale.add_product(data);
+                console.log("Sale items");      
+                console.log(sale.items);      
+                //Clean the searchbox after the product is selected
+                $(this).val('').trigger('change.select2');; 
             });
     
-
+            // Products datatable
+            
+            tblProducts = $('#table_products').DataTable({
+                columnDefs: [
+                    {
+                        targets: [-1], // column index (start from 0)
+                        orderable: false, // set orderable false for selected columns
+                    }
+                ],
+            });
+            
 
     });
-
-
 
 </script>
 {% endblock javascripts %}
