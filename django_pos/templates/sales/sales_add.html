@@ -29,6 +29,7 @@
     </a>
 </div>
 
+<!--Sale products and details-->
 <div class="row mt-3">
     <div class="card col-md-12">
         <div class="card-body ml-0">
@@ -141,7 +142,6 @@
 <script src="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.js' %}"></script>
 
 <script>
-    
     $(document).ready(function() {
         //Tax percentage touchspin
         $("input[name='tax_percentage']").TouchSpin({
@@ -152,6 +152,8 @@
             boostat: 5,
             maxboostedstep: 10,
             postfix: '%'
+        }).on('change', function(){
+            sale.calculate_sale();
         });
 
 
@@ -178,6 +180,29 @@
 
                 ]
             },
+            calculate_sale: function (){
+                // Subtotal of all products added
+                var sub_total = 0.00
+
+                var tax_percentage = $('input[name="tax_percentage"]').val();
+
+                // Calculates the total for each product
+                $.each(this.items.products, function(pos, dict){
+                  dict.pos = pos;  
+                  dict.total_product = dict.quantity * parseFloat(dict.price);
+                  // Add the product total to the sale subtotal
+                  sub_total += dict.total_product;
+                });
+
+                //Update the sale subtotal, grand total, and tax amount
+                this.items.sub_total = sub_total;
+                this.items.grand_total = this.items.sub_total;
+                this.items.tax_amount = parseFloat(this.items.sub_total * (tax_percentage / 100)).toFixed(2);
+      
+                $('input[name="sub_total"]').val(this.items.sub_total);
+                $('input[name="tax_amount"]').val(this.items.tax_amount);
+                $('input[name="grand_total"]').val(this.items.grand_total);
+            },
             // Adds a product to the sale object
             add_product: function (item) {
                 this.items.products.push(item);
@@ -185,8 +210,8 @@
             },
             // Shows the selected product in the table
             list_product: function () {
-                // Calcumos la factura
-                //this.calcular_factura();
+                // Calculate the sale 
+                this.calculate_sale();
 
                 tblProducts = $("#table_products").DataTable({
                     destroy: true,
@@ -196,7 +221,7 @@
                         {"data": "name"},
                         {"data": "price"},
                         {"data": "quantity"},
-                        {"data": "subtotal"},
+                        {"data": "total_product"},
                         {"data": "id"},
                     ],
                     columnDefs: [
@@ -205,7 +230,7 @@
                             class: 'text-center',
                             targets: [3], 
                             render: function (data, type, row){
-                                return '<input name="quantity" type="text" class="form-control form-control-xs text-center" autocomplete="off" value="'+row.quantity+'">';
+                                return '<input name="quantity" type="text" class="form-control form-control-xs text-center input-sm" autocomplete="off" value="'+row.quantity+'">';
                             },                      
                         },
                         {
@@ -213,7 +238,7 @@
                             class: 'text-right',
                             targets: [2,4],
                             render: function (data, type, row){
-                              return data + ' $';
+                              return parseFloat(data).toFixed(2) + ' $';
                             },
                         },
                         {
@@ -245,11 +270,36 @@
                 //console.log(this.traer_ids());
                 
             },
-        }
+        };
 
+        // Tables Events
+        $('#table_products tbody').on('click', 'a[rel="delete"]', function () {
+            // When a product is deleted
+                // Row variable of the table
+                var tr = tblProducts.cell($(this).closest('td, li')).index();
+                // Delete the product
+                sale.items.products.splice(tr.row, 1);
+                //List the table again
+                sale.list_product();
+            }).on('change keyup', 'input[name="quantity"]', function(){
+                // When a product changes is quantity
+                var quantity = parseInt($(this).val());
+                //console.log(quantity);
+                // Row variable of the table
+                var tr = tblProducts.cell($(this).closest('td, li')).index();
+                console.log(tr);
+                //var data = tblProductos.row(tr.row).node();
+                //console.log(data);
+                // Update the product quantity in the sale object
+                sale.items.products[tr.row].quantity = quantity;
+                console.log(sale.items.products);
+                // Calculate the sale with the new quantity
+                sale.calculate_sale();
+                // Find the row to update the product total
+                $('td:eq(4)', tblProducts.row(tr.row).node()).html(sale.items.products[tr.row].total_product + ' $');
+        });
 
         //Select2 products searchbox
-
         // Validate the csrf_token
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
@@ -271,6 +321,7 @@
             placeholder: 'Search a product',
             minimumInputLength: 1,
             allowClear: true,
+            templateResult: template_product_searchbox,
             ajax:{ 
                 url: "{% url 'products:get_products' %}",
                 type: 'POST',
@@ -294,8 +345,8 @@
                 //Add number, subtotal and quantity of the product to the dictionary
                 data.number = number;
                 number++; //Increase the product number in the table
-                data.subtotal = 0;
-                data.quantity = 1;
+                //data.sub_total = 0;
+                //data.quantity = 1;
                 //Add the product to the sale object
                 sale.add_product(data);
                 console.log("Sale items");      
@@ -316,7 +367,29 @@
             });
             
 
-    });
+        });
+
+        // Product searchbox templateResult
+        function template_product_searchbox(repo) {
+            if (repo.loading) {
+                return repo.text;
+            }
+        
+            var option = $(
+                '<div class="wrapper container">'+
+                ' <div class="row">' +
+                    '<div class="col-lg-11 text-left shadow-sm">' +
+                      //'<br>' +
+                      '<p style="margin-bottom: 5px;">' +
+                      '<b>Name:</b> ' + repo.text + " | Category: " + "<span class='btn-info px-2'>" + repo.category + '</span> <br>' +
+                      '<b>Price:</b> <span class="btn-success px-2">'+repo.price+' $. </span>'+
+                      '</p>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>');
+        
+            return option;
+        }
 
 </script>
 {% endblock javascripts %}
