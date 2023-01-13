@@ -10,4 +10,6 @@ urlpatterns = [
     path('', include('pos.urls')),
     # Products
     path('products/', include('products.urls')),
+    # Customers
+    path('customers/', include('customers.urls')),
 ]

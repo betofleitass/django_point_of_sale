@@ -11,7 +11,7 @@
     </a>
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <hr class="sidebar-divider  mb-0">
 
     <!-- Nav Item - Dashboard -->
     <li class="{% if "dashboard" in active_icon %} nav-item active {% else %} nav-item {% endif %}">
@@ -21,7 +21,7 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider">
+    <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Products Collapse Menu -->
     <li class="{% if "products" in active_icon %} nav-item active {% else %} nav-item {% endif %}">
@@ -36,6 +36,16 @@
                 <a class="{% if "products_products" in active_icon %} collapse-item active {% else %} collapse-item {% endif %}" href="{% url 'products:products_list' %}">Products</a>
             </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Customers -->
+    <li class="{% if "customers" in active_icon %} nav-item active {% else %} nav-item {% endif %}">
+        <a class="nav-link" href="{% url 'customers:customers_list' %}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Customers</span></a>
     </li>
 
     <!-- Divider -->

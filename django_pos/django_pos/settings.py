@@ -40,6 +40,7 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
+    "customers",
     "pos",
     "products",
 ]

@@ -18,6 +18,7 @@ class Category(models.Model):
     class Meta:
         # Table's name
         db_table = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self) -> str:
         return self.name
@@ -34,7 +35,7 @@ class Product(models.Model):
     status = models.CharField(
         choices=STATUS_CHOICES,
         max_length=100,
-        verbose_name="Status of the category",
+        verbose_name="Status of the product",
     )
     category = models.ForeignKey(
         Category, related_name="category", on_delete=models.CASCADE, db_column='category')
