@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .models import Category, Product
 
@@ -266,3 +267,52 @@ def ProductsDeleteView(request, product_id):
             request, 'There was an error during the elimination!', extra_tags="danger")
         print(e)
         return redirect('products:products_list')
+
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+@login_required(login_url="/accounts/login/")
+def GetProductsAJAXView(request):
+    if request.method == 'POST':
+        if is_ajax(request=request):
+            print(request.POST)
+            # lista = []
+            # lista.append({"id": 1, "text": "Texto uno"})
+            # lista.append({"id": 1, "text": "Texto dos"})
+            # diccionario = json.dumps(lista)
+
+            data = []
+
+            products = Product.objects.filter(
+                name__icontains=request.POST['term'])
+            for product in products[0:10]:
+                item = product.to_json()
+                data.append(item)
+
+            # excluir_productos = json.loads(
+            #     request.POST['excluir_prod_seleccionados'])
+            # print(excluir_productos)
+            # print(type(excluir_productos))
+
+            # productos = Productos.objects.filter(
+            #     nombre__icontains=request.POST['term'])
+            # for i in productos.exclude(id_producto__in=excluir_productos)[0:10]:
+            #     item = i.toJSON()
+            #     item['id'] = i.id_producto
+            #     item['text'] = i.nombre
+            #     data.append(item)
+
+            # data = [
+            #     {
+            #         "id": 1,
+            #         "text": "Option 1"
+            #     },
+            #     {
+            #         "id": 2,
+            #         "text": "Option 2"
+            #     }
+            # ]
+
+            return JsonResponse(data, safe=False)

@@ -1,0 +1,143 @@
+{% extends "pos/base.html" %}
+{% load static %}
+<!-- Page title  -->
+{% block title %}Sales{% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+    <!-- Datatables -->
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css ' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+<!-- Page Heading -->
+{% block heading %}Sales{% endblock heading %}
+
+<!-- Page content  -->
+{% block content %}
+
+    <!--Create new sale-->
+    <div class="row ml-0 mb-3">
+        <a href="{% url 'sales:sales_add' %}">
+            <button type="button" class="btn btn-success font-weight-bold">
+                    <i class="fas fa-plus mr-2"></i>
+                    Create new sale
+            </button>
+        </a>
+    </div>
+
+    <!-- DataTable -->
+    <div class="card shadow mb-12">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Customers</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th style="width:5%">#</th>
+                            <th style="width:20%">Name</th>
+                            <th style="width:25%">Email</th>
+                            <th style="width:15%">Phone</th>
+                            <th style="width:25%">Adress</th>
+                            <th class="text-center" style="width:10%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in sales %}
+                        <tr>
+                            <td>{{c.id}}</td>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{c.get_full_name}}</td>
+                            <td>{{c.email}}</td>
+                            <td>{{c.phone}}</td>
+                            <td>{{c.address}}</td>
+                            <td class="text-center">
+                                <!--Update-->
+                                <a href="{% url 'products:products_update' c.id %}" class="text-decoration-none">
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Update sale">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </a>
+                                <!--Delete modal-->
+                                <!-- Button trigger modal -->
+                                <a class="text-decoration-none">
+                                    <button rel="delete" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </a>
+                                    
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete sale</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div id="updateThisText" class="modal-body">
+                                            Are you sure you want to delete the sale: {{c.name}}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <a id="updateThisURL" href="{% url 'products:products_delete' c.id %}" class="text-decoration-none">
+                                                <button type="button"  class="btn btn-danger">Delete</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <!-- Datatables -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!--Datatables-->
+    <script>
+        // Call the dataTables jQuery plugin
+        $(document).ready(function() {
+            tblCategories = $('#dataTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false,
+                        searchable: false,
+                    },
+                    {
+                        targets: [-1], // column index (start from 0)
+                        orderable: false, // set orderable false for selected columns
+                    }
+                ],
+            });
+        });
+
+        // Alert when trying to delete a sale
+        $('#dataTable tbody')
+        // Event when whe try to delete a sale
+        // We update the text, and href of the modal delete button
+        .on('click', 'button[rel="delete"]', function () {
+        // Row variable
+        var tr = tblCategories.cell($(this).closest('td, li')).index();
+        row_data = ( tblCategories.row(tr.row).data());
+        customer_id = row_data[0];
+        customer_name = row_data[2]
+        new_delete_url  = 'delete/' + customer_id;
+        document.getElementById("updateThisText").innerHTML = "Are you sure you want to delete the sale:  " + customer_name + "?";
+        document.getElementById("updateThisURL").href=new_delete_url;
+        });
+    </script>
+{% endblock javascripts %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import model_to_dict
 
 
 class Category(models.Model):
@@ -48,3 +49,9 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def to_json(self):
+        item = model_to_dict(self)
+        item['id'] = self.id
+        item['text'] = self.name
+        return item

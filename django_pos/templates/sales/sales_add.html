@@ -1,0 +1,218 @@
+{% extends "pos/base.html" %}
+
+<!-- Page title  -->
+{% block title %}Add sale{% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<!--Select2 CSS Y JS-->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+{% endblock stylesheets %}
+
+<!-- Page Heading -->
+{% block heading %}Add sale{% endblock heading %}
+
+<!-- Page content  -->
+{% block content %}
+<!--Go back-->
+<div class="row ml-0 mb-3">
+    <a href="{% url 'sales:sales_list' %}">
+        <button type="button" class="btn btn-info font-weight-bold">
+            <i class="fas fa-long-arrow-alt-left mr-2"></i>
+            Go back
+        </button>
+    </a>
+</div>
+
+<div class="row mt-3">
+    <div class="card col-md-12">
+        <div class="card-body ml-0">
+            <div class="row">
+                <!--Left column-->
+                <div class="col-md-9 pl-0">
+                    <div class="card card-secondary">
+                        <div class="card-header">Sale products</div>
+                        
+                        <div class="card-body">
+                            <!--Search product-->
+                            <div class="form-group">
+                                <label>Search product:</label>
+                                <div class="input-group">
+                                    <input name="searchbox_products" id="searchbox_products" class="form-control">
+                                    <span class="input-group-append">
+                                    <button type = "button" class="btn btn-danger btn-flat deleteProductSearch">
+                                        <i class="fas fa-times sm"></i>
+                                    </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <!--End Search product-->
+
+                            <!--Products table-->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap" id="tabla_productos">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th class="text-center">Delete</th>
+                                            </tr>
+                                        </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--End Products table-->
+                        </div>
+                    </div>
+                </div>
+                <!--End Left column-->
+
+                <!--Righ column-->
+                <div class="col-md-3 pr-0">
+                    <div class="card card-secondary">
+                        <div class="card-header">Sale details</div>
+                        <div class="card-body">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="state">Customer</label>
+                                <select name="customer" class="form-control" id="searchbox_customers" required>
+                                    <option value="" selected disabled hidden>Select the customer</option>
+                                    {% for customer in customers %}
+                                    <option value="{{customer.value}}">{{customer.label}}</option>
+                                    {% endfor %}
+                                </select>
+                            <div class="form-group mt-4">
+                                <label>Subtotal</label>
+                                <div class="input-group">
+                                    <input name="sub_total" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tax Inclusive (%)</label>
+                                <div class="input-group">
+                                    <input name="tax_percentage" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tax Amount</label>
+                                <div class="input-group">
+                                    <input name="tax_amount" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Grand Total</label>
+                                <div class="input-group">
+                                    <input name="grand_total" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ammount payed</label>
+                                <div class="input-group">
+                                    <input name="amount_payed" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success font-weight-bold">Create sale</button>
+                        </div>
+                        <!--End card-body-->
+                </div>
+                <!--End Right column-->
+            </div>
+            <!--End row-->
+        </div>
+        <!--End card-body-->
+    </div>
+
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!--Select2-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+
+<script>
+    
+    $(document).ready(function() {
+        //Select2 customers
+        $('#searchbox_customers').select2({
+            placeholder: "Select a customer",
+            allowClear: true,
+        });
+
+
+        //Select2 products searchbox
+
+        // Validate the csrf_token
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        // To avoid error 403 Fordbidden
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $('#searchbox_products').select2({
+            delay: 250,
+            placeholder: 'Search a product',
+            minimumInputLength: 1,
+            allowClear: true,
+            ajax:{ 
+                url: "{% url 'products:get_products' %}",
+                type: 'POST',
+                data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                    //excluir_prod_seleccionados: JSON.stringify(venta.traer_ids())
+                }
+                return queryParameters;
+                },
+                processResults: function (data) {
+                    console.log(data)
+                    return {
+                        results: data
+                    };
+                },
+            }
+            }).on('select2:select', function (e) {
+                //Cada vez que un producto buscado es seleccionado
+                alert("X")
+                /*
+                var data = e.params.data;
+                console.log("Producto seleccionado con select2");
+                console.log(data);
+                //Variable para el numero de producto en la tabla
+                var nro = 1;
+
+                //Agregamos nro, subtotal y cantidad del producto al diccionario
+                data.nro = nro;
+                nro++; //Aumentamos el nro de producto de la tabla;
+                data.subtotal = 0;
+                data.cant = 1;
+                //Agregamos al objeto de venta el producto
+                venta.add(data);
+                console.log(venta.items);      
+                //Limpiamos la barra de busqueda luego de Seleccionador
+                $(this).val('').trigger('change.select2');; */ 
+            });
+    
+
+
+    });
+
+
+
+</script>
+{% endblock javascripts %}

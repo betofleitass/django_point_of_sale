@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import model_to_dict
 
 
 class Customer(models.Model):
@@ -16,3 +17,10 @@ class Customer(models.Model):
 
     def get_full_name(self):
         return self.first_name + " " + self.last_name
+
+    def to_select2(self):
+        item = {
+            "label": self.get_full_name(),
+            "value": self.id
+        }
+        return item

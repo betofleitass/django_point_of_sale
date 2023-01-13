@@ -49,6 +49,16 @@
     </li>
 
     <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Sales -->
+    <li class="{% if "sales" in active_icon %} nav-item active {% else %} nav-item {% endif %}">
+        <a class="nav-link" href="{% url 'sales:sales_list' %}">
+            <i class="fas fa-fw fa-cart-plus"></i>
+            <span>Sales</span></a>
+    </li>
+
+    <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->
