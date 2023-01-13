@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Category
+from .models import Category, Product
 
 
 @login_required(login_url="/accounts/login/")
@@ -125,3 +125,57 @@ def CategoriesUpdateView(request, category_id):
             return redirect('products:categories_list')
 
     return render(request, "products/categories_update.html", context=context)
+
+
+@login_required(login_url="/accounts/login/")
+def ProductsListView(request):
+    context = {
+        "active_icon": "products",
+        "products": Product.objects.all()
+    }
+    return render(request, "products/products.html", context=context)
+
+
+@login_required(login_url="/accounts/login/")
+def ProductsAddView(request):
+    context = {
+        "active_icon": "products_categories",
+        "product_status": Product.status.field.choices,
+        "categories": Category.objects.all().filter(status="ACTIVE")
+    }
+
+    if request.method == 'POST':
+        # Save the POST arguements
+        data = request.POST
+
+        attributes = {
+            "name": data['name'],
+            "status": data['state'],
+            "description": data['description'],
+            "category": Category.objects.get(id=data['category']),
+            "price": data['price']
+        }
+
+        # Check if a product with the same attributes exists
+        if Product.objects.filter(**attributes).exists():
+            messages.error(request, 'Product already exists!',
+                           extra_tags="warning")
+            return redirect('products:products_add')
+
+        try:
+            # Create the product
+            new_product = Product.objects.create(**attributes)
+
+            # If it doesn't exists save it
+            new_product.save()
+
+            messages.success(request, 'Product: ' +
+                             attributes["name"] + ' created succesfully!', extra_tags="success")
+            return redirect('products:products_list')
+        except Exception as e:
+            messages.success(
+                request, 'There was an error during the creation!', extra_tags="danger")
+            print(e)
+            return redirect('products:products_add')
+
+    return render(request, "products/products_add.html", context=context)

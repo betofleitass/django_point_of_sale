@@ -14,4 +14,9 @@ urlpatterns = [
     # Update category
     path('categories/update/<str:category_id>',
          views.CategoriesUpdateView, name='categories_update'),
+
+    # List products
+    path('', views.ProductsListView, name='products_list'),
+    # Add category
+    path('add', views.ProductsAddView, name='products_add'),
 ]
