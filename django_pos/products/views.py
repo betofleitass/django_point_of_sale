@@ -84,7 +84,7 @@ def CategoriesUpdateView(request, category_id):
 
     # Get the category
     try:
-        # Get the category to delete
+        # Get the category to update
         category = Category.objects.get(id=category_id)
     except Exception as e:
         messages.success(
@@ -108,6 +108,12 @@ def CategoriesUpdateView(request, category_id):
                 "status": data['state'],
                 "description": data['description']
             }
+
+            # Check if a category with the same attributes exists
+            if Category.objects.filter(**attributes).exists():
+                messages.error(request, 'Category already exists!',
+                               extra_tags="warning")
+                return redirect('products:categories_add')
 
             # Get the category to update
             category = Category.objects.filter(
