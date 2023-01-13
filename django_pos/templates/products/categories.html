@@ -35,6 +35,7 @@
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th style="width:7%">#</th>
                             <th>Name</th>
                             <th>Description</th>
@@ -45,6 +46,7 @@
                     <tbody>
                         {% for c in categories %}
                         <tr>
+                            <td>{{c.id}}</td>
                             <td>{{forloop.counter}}</td>
                             <td>{{c.name}}</td>
                             <td>{{c.description}}</td>
@@ -67,7 +69,7 @@
                                 <!--Delete modal-->
                                 <!-- Button trigger modal -->
                                 <a class="text-decoration-none">
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                    <button rel="delete" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </a>
@@ -82,13 +84,14 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">Are you sure you want to delete the category: {{c.name}}
+                                        <div id="updateThisText" class="modal-body">
+                                            Are you sure you want to delete the category: {{c.name}}
                                         </div>
                                         <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <a href="{% url 'products:categories_delete' c.id %}" class="text-decoration-none">
-                                            <button type="button"  class="btn btn-danger">Delete</button>
-                                        </a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <a id="updateThisURL" href="{% url 'products:categories_delete' c.id %}" class="text-decoration-none">
+                                                <button type="button"  class="btn btn-danger">Delete</button>
+                                            </a>
                                         </div>
                                     </div>
                                     </div>
@@ -113,7 +116,34 @@
     <script>
         // Call the dataTables jQuery plugin
         $(document).ready(function() {
-            $('#dataTable').DataTable();
+            tblCategories = $('#dataTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false,
+                        searchable: false,
+                    },
+                    {
+                        targets: [-1], // column index (start from 0)
+                        orderable: false, // set orderable false for selected columns
+                    }
+                ],
+            });
+        });
+
+        // Alert when trying to delete a category
+        $('#dataTable tbody')
+        // Event when whe try to delete a category
+        // We update the text, and href of the modal delete button
+        .on('click', 'button[rel="delete"]', function () {
+        // Row variable
+        var tr = tblCategories.cell($(this).closest('td, li')).index();
+        row_data = ( tblCategories.row(tr.row).data());
+        category_id = row_data[0];
+        category_name = row_data[2]
+        new_delete_url  = 'categories/delete/' + category_id;
+        document.getElementById("updateThisText").innerHTML = "Are you sure you want to delete the category:  " + category_name + "?";
+        document.getElementById("updateThisURL").href=new_delete_url;
         });
     </script>
 {% endblock javascripts %}

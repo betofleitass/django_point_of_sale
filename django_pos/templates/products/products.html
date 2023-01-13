@@ -35,18 +35,20 @@
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th style="width:7%">#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th class="text-center">Price</th>
-                            <th class="text-center" style="width:15%">Status</th>
-                            <th class="text-center" style="width:15%">Actions</th>
+                            <th>ID</th>
+                            <th style="width:5%">#</th>
+                            <th style="width:20%">Name</th>
+                            <th style="width:25%">Description</th>
+                            <th style="width:15%">Category</th>
+                            <th class="text-center" style="width:15%">Price</th>
+                            <th class="text-center" style="width:10%">Status</th>
+                            <th class="text-center" style="width:10%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for p in products %}
                         <tr>
+                            <td>{{p.id}}</td>
                             <td>{{forloop.counter}}</td>
                             <td>{{p.name}}</td>
                             <td>{{p.description}}</td>
@@ -63,16 +65,15 @@
                             {% endif %}
                             <td class="text-center">
                                 <!--Update-->
-                                <a href="#" class="text-decoration-none">
-                                {% comment %} <a href="{% url 'products:products_update' p.id %}" class="text-decoration-none"> {% endcomment %}
-                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Update product">
+                                <a href="{% url 'products:products_update' p.id %}" class="text-decoration-none">
+                                    <button  type="button" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Update product">
                                         <i class="fas fa-pen"></i>
                                     </button>
                                 </a>
                                 <!--Delete modal-->
                                 <!-- Button trigger modal -->
                                 <a class="text-decoration-none">
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                    <button rel="delete" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </a>
@@ -87,14 +88,15 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">Are you sure you want to delete the product: {{p.name}}
+                                        <div id="updateThisText" class="modal-body">
+                                            
                                         </div>
                                         <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <a href="#" class="text-decoration-none">
-                                        {% comment %} <a href="{% url 'products:products_delete' p.id %}" class="text-decoration-none"> {% endcomment %}
-                                            <button type="button"  class="btn btn-danger">Delete</button>
-                                        </a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <a href="#" class="text-decoration-none">
+                                            <a id="updateThisURL" href="{% url 'products:products_delete' p.id %}" class="text-decoration-none">
+                                                <button  type="button"  class="btn btn-danger">Delete</button>
+                                            </a>
                                         </div>
                                     </div>
                                     </div>
@@ -119,7 +121,36 @@
     <script>
         // Call the dataTables jQuery plugin
         $(document).ready(function() {
-            $('#dataTable').DataTable();
+            tblProducts = $('#dataTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false,
+                        searchable: false,
+                    },
+                    {
+                        targets: [-1], // column index (start from 0)
+                        orderable: false, // set orderable false for selected columns
+                    }
+                ],
+            });
         });
+
+    // Alert when trying to delete a product
+    $('#dataTable tbody')
+      // Event when whe try to delete a product
+      // We update the text, and href of the modal delete button
+      .on('click', 'button[rel="delete"]', function () {
+        // Row variable
+        var tr = tblProducts.cell($(this).closest('td, li')).index();
+        row_data = ( tblProducts.row(tr.row).data());
+        product_id = row_data[0];
+        product_name = row_data[2]
+        new_delete_url  = 'delete/' + product_id;
+        document.getElementById("updateThisText").innerHTML = "Are you sure you want to delete the product:  " + product_name + "?";
+        document.getElementById("updateThisURL").href=new_delete_url;
+      });
+
+
     </script>
 {% endblock javascripts %}
