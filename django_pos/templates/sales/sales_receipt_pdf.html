@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sale Receipt PDF</title>
+    <style>
+
+        * {
+            color: black;
+        }
+
+        body {
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            color: black;
+        }
+
+        .name-company {
+            font-size: 25px;
+            <!--
+                padding: 0;
+                margin: 0;
+            -->
+            font-weight: bold;
+            text-transform: uppercase;
+            <!--
+            text-align: center;
+            -->
+        }
+
+        table thead tr th {
+            border: 1px solid black !important;
+            padding: 3px;
+        }
+
+        table tbody tr td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+
+        .img-logo {
+            margin-top: 10px;
+            width: 75px;
+            height: 75px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row border border-dark">
+        <div class="col-6">
+            <p class="name-company"><b>E-Corp</b></p>
+            <p><b>135 East 57th Street</b></p>
+            <p><b>New York, NY 10011, USA</b></p>
+            <p><b>Phone:</b> (213) 484-6829</p>
+        </div>
+        <div class="col-6 border-left border-dark">
+            <p><b>Date:</b> {{sale.date_added}}</p>
+            <p><b>Sale ID:</b> {{sale.id}}</p>
+            <p><b>Customer:</b> {{sale.customer.get_full_name}}</p>
+        </div>
+    </div>
+
+    <br>
+
+    <!--Tabla de productos-->
+    <table class="table" style="width: 100%;">
+        <thead>
+        <tr style="border: 1px solid black;">
+            <th style="width: 5%;" class="text-center">#</th>
+            <th style="width: 40%;" class="text-left pl-2">Product</th>
+            <th style="width: 5%;" class="text-center">Quantity</th>
+            <th style="width: 20%;" class="text-right pr-2">Price</th>
+            <th style="width: 20%;" class="text-right pr-2">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in details %}
+            <tr>
+                <td class="text-center">{{forloop.counter}}</td>
+                <td class="text-left pl-2">{{d.product.name}}</td>
+                <td class="text-center">{{d.quantity}}</td>
+                <td class="text-right pr-2 ">{{d.price}} $</td>
+                <td class="text-right pr-2">{{d.total_detail}} $</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4" class="text-right pr-2"><b>Subtotal</b></td>
+            <td class="text-right pr-2">{{sale.sub_total|floatformat:2}} $</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right pr-2"><b>Tax Inclusive ({{sale.tax_percentage}}%)</b></td>
+            <td class="text-right pr-2">{{sale.tax_amount|floatformat:2}} $</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right pr-2"><b>Grand Total</b></td>
+            <td class="text-right pr-2">{{ sale.grand_total }} $</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right pr-2"><b>Amount payed</b></td>
+            <td class="text-right pr-2">{{ sale.amount_payed }} $</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-right pr-2"><b>Change</b></td>
+            <td class="text-right pr-2">{{ sale.amount_change }} $</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <p class="text-uppercase font-weight-bold text-center">
+                    Thank you for your preference!
+                </p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

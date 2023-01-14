@@ -60,6 +60,12 @@
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </a>
+                                <!--Print receipt-->
+                                <a href="{% url 'sales:sales_receipt_pdf' s.id %}" class="text-decoration-none">
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="tooltip" title="View Receipt">
+                                        <i class="fas fa-receipt"></i>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}

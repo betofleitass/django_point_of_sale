@@ -11,4 +11,7 @@ urlpatterns = [
     # Details sale
     path('details/<str:sale_id>',
          views.SalesDetailsView, name='sales_details'),
+    # Sale receipt PDF
+    path("pdf/<str:sale_id>",
+         views.ReceiptPDFView, name="sales_receipt_pdf"),
 ]
