@@ -7,7 +7,7 @@
 ## Table of Contents:
 - [Description](#description)
 - [Features](#features)
-- [Screenshots](#features)
+- [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Run it locally](#run-it-locally)
@@ -18,6 +18,9 @@
 
 Django Point of Sale (POS)
 This is a project for learning purposes
+
+## Screenshots
+[Click Here](screenshots/README.md)
 
 ## Features
 - Login Page with User authentication
