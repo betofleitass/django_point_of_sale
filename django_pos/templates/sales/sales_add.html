@@ -49,6 +49,12 @@
                             </div>
                             <!--End Search product-->
 
+                            <!--Delete all products from sale-->
+                            <button type="button" class="mb-4 btn btn-danger btn-sm deleteAll">
+                                Delete all products <i class="ml-1 fas fa-trash-alt fa-xs"></i>
+                            </button>
+                            <!--End Delete all products from sale-->
+
                             <!--Products table-->
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-hover text-nowrap" id="table_products">
@@ -140,9 +146,24 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
 <!--Bootstrap Touchspin-->
 <script src="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.js' %}"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.15/dist/sweetalert2.all.min.js"></script>
 
 <script>
     $(document).ready(function() {
+
+        // Source: https://stackoverflow.com/a/32605063
+        function roundTo(n, digits) {
+            if (digits === undefined) {
+                digits = 0;
+            }
+    
+            var multiplicator = Math.pow(10, digits);
+            n = parseFloat((n * multiplicator).toFixed(11));
+            return Math.round(n) / multiplicator;
+        }
+
+
         //Tax percentage touchspin
         $("input[name='tax_percentage']").TouchSpin({
             min: 0,
@@ -189,15 +210,15 @@
                 // Calculates the total for each product
                 $.each(this.items.products, function(pos, dict){
                   dict.pos = pos;  
-                  dict.total_product = dict.quantity * parseFloat(dict.price);
+                  dict.total_product = roundTo(dict.quantity * dict.price, 2);
                   // Add the product total to the sale subtotal
-                  sub_total += dict.total_product;
+                  sub_total += roundTo(dict.total_product, 2);
                 });
 
                 //Update the sale subtotal, grand total, and tax amount
-                this.items.sub_total = sub_total;
-                this.items.grand_total = this.items.sub_total;
-                this.items.tax_amount = parseFloat(this.items.sub_total * (tax_percentage / 100)).toFixed(2);
+                this.items.sub_total = roundTo(sub_total, 2);
+                this.items.grand_total = roundTo(this.items.sub_total, 2);
+                this.items.tax_amount = roundTo(this.items.sub_total * (tax_percentage / 100), 2);
       
                 $('input[name="sub_total"]').val(this.items.sub_total);
                 $('input[name="tax_amount"]').val(this.items.tax_amount);
@@ -297,6 +318,36 @@
                 sale.calculate_sale();
                 // Find the row to update the product total
                 $('td:eq(4)', tblProducts.row(tr.row).node()).html(sale.items.products[tr.row].total_product + ' $');
+        });
+
+        // Delete all products
+        $('.deleteAll').on('click', function(){
+            // If there are no products doesn't do anything
+            if(sale.items.products.length === 0 ) return false;
+            // Alert the user
+            Swal.fire({
+                customClass: {
+                    confirmButton: 'ml-3 btn btn-danger',
+                    cancelButton: 'btn btn-info'
+                },
+                buttonsStyling: false,
+                title: "Are you sure you want to delete all products from the sale?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete all',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+
+            }).then((result) => {
+                // Si se confirma
+                if (result.isConfirmed) {
+                    // Borramos todos los productos del objeto de venta
+                    sale.items.products = [];
+                    // Calculamos de vuelta la factura
+                    sale.list_product();
+                    Swal.fire('All products were eliminated!', '', 'success')
+                };
+            })
         });
 
         //Select2 products searchbox
