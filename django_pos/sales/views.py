@@ -69,6 +69,4 @@ def SalesAddView(request):
                 print(e)
                 return redirect('sales:sales_list')
 
-        return redirect('sales:sales_list')
-
     return render(request, "sales/sales_add.html", context=context)

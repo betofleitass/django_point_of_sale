@@ -19,7 +19,7 @@ class Sale(models.Model):
         db_table = 'Sales'
 
     def __str__(self) -> str:
-        return "Sale ID: " + str(self.id) + " | Grand Total: " + str(self.grand_total)
+        return "Sale ID: " + str(self.id) + " | Grand Total: " + str(self.grand_total) + " | Datetime: " + str(self.date_added)
 
     def sum_items(self):
         details = SaleDetail.objects.filter(sale=self.id)
