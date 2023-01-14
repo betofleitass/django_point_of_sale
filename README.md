@@ -7,7 +7,7 @@
 ## Table of Contents:
 - [Description](#description)
 - [Features](#features)
-- [Screenshots](#features)
+- [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Run it locally](#run-it-locally)
