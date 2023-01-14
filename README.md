@@ -20,7 +20,7 @@ Django Point of Sale (POS)
 This is a project for learning purposes
 
 ## Screenshots
-[Click Here](django_point_of_sale/tree/master/screenshots/README.md)
+[Click Here](screenshots/README.md)
 
 ## Features
 - Login Page with User authentication
