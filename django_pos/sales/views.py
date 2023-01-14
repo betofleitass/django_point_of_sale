@@ -1,7 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from sales.models import Customer
+from customers.models import Customer
+from .models import Sale, SaleDetail
+from products.models import Product
+import json
+
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
 @login_required(login_url="/accounts/login/")
@@ -20,40 +27,48 @@ def SalesAddView(request):
         "customers": [c.to_select2() for c in Customer.objects.all()]
     }
 
-    print(context["customers"])
-
     if request.method == 'POST':
-        # Save the POST arguements
-        data = request.POST
+        if is_ajax(request=request):
+            # Save the POST arguements
+            data = json.load(request)
 
-        attributes = {
-            "first_name": data['first_name'],
-            "last_name": data['last_name'],
-            "address": data['address'],
-            "email": data['email'],
-            "phone": data['phone'],
-        }
+            sale_attributes = {
+                "customer": Customer.objects.get(id=int(data['customer'])),
+                "sub_total": float(data["sub_total"]),
+                "grand_total": float(data["grand_total"]),
+                "tax_amount": float(data["tax_amount"]),
+                "tax_percentage": float(data["tax_percentage"]),
+                "amount_payed": float(data["amount_payed"]),
+                "amount_change": float(data["amount_change"]),
+            }
+            try:
+                # Create the sale
+                new_sale = Sale.objects.create(**sale_attributes)
+                new_sale.save()
+                # Create the sale details
+                products = data["products"]
 
-        # Check if a sale with the same attributes exists
-        if Customer.objects.filter(**attributes).exists():
-            messages.error(request, 'Customer already exists!',
-                           extra_tags="warning")
-            return redirect('sales:sales_add')
+                for product in products:
+                    detail_attributes = {
+                        "sale": Sale.objects.get(id=new_sale.id),
+                        "product": Product.objects.get(id=int(product["id"])),
+                        "price": product["price"],
+                        "quantity": product["quantity"],
+                        "total_detail": product["total_product"]
+                    }
+                    sale_detail_new = SaleDetail.objects.create(
+                        **detail_attributes)
+                    sale_detail_new.save()
 
-        try:
-            # Create the sale
-            new_customer = Customer.objects.create(**attributes)
+                messages.success(
+                    request, 'Sale created succesfully!', extra_tags="success")
+                return redirect('sales:sales_list')
+            except Exception as e:
+                messages.success(
+                    request, 'There was an error during the creation!', extra_tags="danger")
+                print(e)
+                return redirect('sales:sales_add')
 
-            # If it doesn't exists save it
-            new_customer.save()
-
-            messages.success(request, 'Customer: ' + attributes["first_name"] + " " +
-                             attributes["last_name"] + ' created succesfully!', extra_tags="success")
-            return redirect('sales:sales_list')
-        except Exception as e:
-            messages.success(
-                request, 'There was an error during the creation!', extra_tags="danger")
-            print(e)
-            return redirect('sales:sales_add')
+        return redirect('sales:sales_add')
 
     return render(request, "sales/sales_add.html", context=context)

@@ -30,111 +30,113 @@
 </div>
 
 <!--Sale products and details-->
-<div class="row mt-3">
-    <div class="card col-md-12">
-        <div class="card-body ml-0">
-            <div class="row">
-                <!--Left column-->
-                <div class="col-md-9 pl-0">
-                    <div class="card card-secondary">
-                        <div class="card-header">Sale products</div>
-                        
-                        <div class="card-body">
-                            <!--Search product-->
-                            <div class="form-group">
-                                <label>Search product:</label>
-                                <div class="input-group">
-                                    <select class="form-control select2" name="searchbox_products" id="searchbox_products"></select>
+<form action="{% url 'sales:sales_add' %}" class="saleForm" method="post">
+    <div class="row mt-3">
+        <div class="card col-md-12">
+            <div class="card-body ml-0">
+                <div class="row">
+                    <!--Left column-->
+                    <div class="col-md-9 pl-0">
+                        <div class="card card-secondary">
+                            <div class="card-header">Sale products</div>
+                            
+                            <div class="card-body">
+                                <!--Search product-->
+                                <div class="form-group">
+                                    <label>Search product:</label>
+                                    <div class="input-group">
+                                        <select class="form-control select2" name="searchbox_products" id="searchbox_products"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--End Search product-->
+                                <!--End Search product-->
 
-                            <!--Delete all products from sale-->
-                            <button type="button" class="mb-4 btn btn-danger btn-sm deleteAll">
-                                Delete all products <i class="ml-1 fas fa-trash-alt fa-xs"></i>
-                            </button>
-                            <!--End Delete all products from sale-->
+                                <!--Delete all products from sale-->
+                                <button type="button" class="mb-4 btn btn-danger btn-sm deleteAll">
+                                    Delete all products <i class="ml-1 fas fa-trash-alt fa-xs"></i>
+                                </button>
+                                <!--End Delete all products from sale-->
 
-                            <!--Products table-->
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap" id="table_products">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th class="text-center">Delete</th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <!--Products table-->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover text-nowrap" id="table_products">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th class="text-center">Delete</th>
+                                                </tr>
+                                            </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--End Products table-->
                             </div>
-                            <!--End Products table-->
                         </div>
                     </div>
-                </div>
-                <!--End Left column-->
+                    <!--End Left column-->
 
-                <!--Righ column-->
-                <div class="col-md-3 pr-0">
-                    <div class="card card-secondary">
-                        <div class="card-header">Sale details</div>
-                        <div class="card-body">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="state">Customer</label>
-                                <select name="customer" class="form-control" id="searchbox_customers" required>
-                                    <option value="" selected disabled hidden>Select the customer</option>
-                                    {% for customer in customers %}
-                                    <option value="{{customer.value}}">{{customer.label}}</option>
-                                    {% endfor %}
-                                </select>
-                            <div class="form-group mt-4">
-                                <label>Subtotal</label>
-                                <div class="input-group">
-                                    <input name="sub_total" class="form-control" required>
+                    <!--Righ column-->
+                    <div class="col-md-3 pr-0">
+                        <div class="card card-secondary">
+                            <div class="card-header">Sale details</div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="customer">Customer</label>
+                                    <select name="customer" class="form-control" id="searchbox_customers" required>
+                                        <option value="" selected disabled hidden>Select the customer</option>
+                                        {% for customer in customers %}
+                                        <option value="{{customer.value}}">{{customer.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                <div class="form-group mt-4">
+                                    <label>Subtotal</label>
+                                    <div class="input-group">
+                                        <input name="sub_total" class="form-control" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tax Inclusive (%)</label>
-                                <div class="input-group">
-                                    <input name="tax_percentage" class="form-control" value=0 required>
+                                <div class="form-group">
+                                    <label>Tax Inclusive (%)</label>
+                                    <div class="input-group">
+                                        <input name="tax_percentage" class="form-control" value=0 required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tax Amount</label>
-                                <div class="input-group">
-                                    <input name="tax_amount" class="form-control" required>
+                                <div class="form-group">
+                                    <label>Tax Amount</label>
+                                    <div class="input-group">
+                                        <input name="tax_amount" class="form-control" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Grand Total</label>
-                                <div class="input-group">
-                                    <input name="grand_total" class="form-control" required>
+                                <div class="form-group">
+                                    <label>Grand Total</label>
+                                    <div class="input-group">
+                                        <input name="grand_total" class="form-control" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Ammount payed</label>
-                                <div class="input-group">
-                                    <input name="amount_payed" class="form-control" required>
+                                <div class="form-group">
+                                    <label>Amount payed</label>
+                                    <div class="input-group">
+                                        <input name="amount_payed" class="form-control" value=99 required>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <button type="submit" class="btn btn-success font-weight-bold">Create sale</button>
-                        </div>
-                        <!--End card-body-->
+                                <button type="submit" class="btn btn-success font-weight-bold">Create sale</button>
+                            </div>
+                            <!--End card-body-->
+                    </div>
+                    <!--End Right column-->
                 </div>
-                <!--End Right column-->
+                <!--End row-->
             </div>
-            <!--End row-->
+            <!--End card-body-->
         </div>
-        <!--End card-body-->
-    </div>
 
-</div>
+    </div>
+</form>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -150,19 +152,127 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.15/dist/sweetalert2.all.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-
-        // Source: https://stackoverflow.com/a/32605063
-        function roundTo(n, digits) {
-            if (digits === undefined) {
-                digits = 0;
-            }
-    
-            var multiplicator = Math.pow(10, digits);
-            n = parseFloat((n * multiplicator).toFixed(11));
-            return Math.round(n) / multiplicator;
+    // Source: https://stackoverflow.com/a/32605063
+    function roundTo(n, digits) {
+        if (digits === undefined) {
+            digits = 0;
         }
 
+        var multiplicator = Math.pow(10, digits);
+        n = parseFloat((n * multiplicator).toFixed(11));
+        return Math.round(n) / multiplicator;
+    }
+
+    //Variable for product number in table
+    var number = 1;
+
+    //Variable to store sale details and products
+    var sale = {
+        items: {
+            customer : 0, 
+            sub_total : 0.00, 
+            grand_total : 0.00, 
+            tax_amount : 0.00, 
+            tax_percentage : 0.00, 
+            amount_payed : 0.00, 
+            amount_change : 0.00,
+            products: [
+
+            ]
+        },
+        calculate_sale: function (){
+            // Subtotal of all products added
+            var sub_total = 0.00
+
+            var tax_percentage = $('input[name="tax_percentage"]').val();
+
+            // Calculates the total for each product
+            $.each(this.items.products, function(pos, dict){
+                dict.pos = pos;  
+                dict.total_product = roundTo(dict.quantity * dict.price, 2);
+                // Add the product total to the sale subtotal
+                sub_total += roundTo(dict.total_product, 2);
+            });
+
+            //Update the sale subtotal, grand total, and tax amount
+            this.items.sub_total = roundTo(sub_total, 2);
+            this.items.grand_total = roundTo(this.items.sub_total, 2);
+            this.items.tax_amount = roundTo(this.items.sub_total * (tax_percentage / 100), 2);
+    
+            $('input[name="sub_total"]').val(this.items.sub_total);
+            $('input[name="tax_amount"]').val(this.items.tax_amount);
+            $('input[name="grand_total"]').val(this.items.grand_total);
+        },
+        // Adds a product to the sale object
+        add_product: function (item) {
+            this.items.products.push(item);
+            this.list_product();
+        },
+        // Shows the selected product in the table
+        list_product: function () {
+            // Calculate the sale 
+            this.calculate_sale();
+
+            tblProducts = $("#table_products").DataTable({
+                destroy: true,
+                data: this.items.products,
+                columns: [
+                    {"data": "number"}, 
+                    {"data": "name"},
+                    {"data": "price"},
+                    {"data": "quantity"},
+                    {"data": "total_product"},
+                    {"data": "id"},
+                ],
+                columnDefs: [
+                    {
+                        // Quantity
+                        class: 'text-center',
+                        targets: [3], 
+                        render: function (data, type, row){
+                            return '<input name="quantity" type="text" class="form-control form-control-xs text-center input-sm" autocomplete="off" value="'+row.quantity+'">';
+                        },                      
+                    },
+                    {
+                        //Product price an total
+                        class: 'text-right',
+                        targets: [2,4],
+                        render: function (data, type, row){
+                            return parseFloat(data).toFixed(2) + ' $';
+                        },
+                    },
+                    {
+                        //Delete button
+                        class: 'text-center',
+                        targets: [-1],
+                        orderable: false,
+                        render: function (data, type, row){
+                            return '<a rel="delete" type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Delete product"> <i class="fas fa-trash-alt fa-xs"></i> </a>';
+                        },
+                    },
+
+                ],
+                rowCallback(row, data, displayNun, displayIndex, dataIndex){
+                    $(row).find(("input[name='quantity']")).TouchSpin({
+                        min: 1,
+                        max: 100, //Máximo de acuerdo al stock de cada producto
+                        step: 1,
+                        decimals: 0,
+                        boostat: 1,
+                        maxboostedstep: 3,
+                        postfix: ''
+                    });
+                },
+            })
+            
+            // IDs de productos ya seleccionados para exlcuir en la busqueda
+            //console.log("this.traer_ids()");
+            //console.log(this.traer_ids());
+            
+        },
+    };
+
+    $(document).ready(function() {
 
         //Tax percentage touchspin
         $("input[name='tax_percentage']").TouchSpin({
@@ -183,115 +293,6 @@
             placeholder: "Select a customer",
             allowClear: true,
         });
-
-        //Variable for product number in table
-        var number = 1;
-
-        //Variable to store sale details and products
-        var sale = {
-            items: {
-                customer : "", 
-                sub_total : 0.00, 
-                grand_total : 0.00, 
-                tax_amount : 0.00, 
-                tax_percentage : 0.00, 
-                amount_payed : 0.00, 
-                amount_change : 0.00,
-                products: [
-
-                ]
-            },
-            calculate_sale: function (){
-                // Subtotal of all products added
-                var sub_total = 0.00
-
-                var tax_percentage = $('input[name="tax_percentage"]').val();
-
-                // Calculates the total for each product
-                $.each(this.items.products, function(pos, dict){
-                  dict.pos = pos;  
-                  dict.total_product = roundTo(dict.quantity * dict.price, 2);
-                  // Add the product total to the sale subtotal
-                  sub_total += roundTo(dict.total_product, 2);
-                });
-
-                //Update the sale subtotal, grand total, and tax amount
-                this.items.sub_total = roundTo(sub_total, 2);
-                this.items.grand_total = roundTo(this.items.sub_total, 2);
-                this.items.tax_amount = roundTo(this.items.sub_total * (tax_percentage / 100), 2);
-      
-                $('input[name="sub_total"]').val(this.items.sub_total);
-                $('input[name="tax_amount"]').val(this.items.tax_amount);
-                $('input[name="grand_total"]').val(this.items.grand_total);
-            },
-            // Adds a product to the sale object
-            add_product: function (item) {
-                this.items.products.push(item);
-                this.list_product();
-            },
-            // Shows the selected product in the table
-            list_product: function () {
-                // Calculate the sale 
-                this.calculate_sale();
-
-                tblProducts = $("#table_products").DataTable({
-                    destroy: true,
-                    data: this.items.products,
-                    columns: [
-                        {"data": "number"}, 
-                        {"data": "name"},
-                        {"data": "price"},
-                        {"data": "quantity"},
-                        {"data": "total_product"},
-                        {"data": "id"},
-                    ],
-                    columnDefs: [
-                        {
-                            // Quantity
-                            class: 'text-center',
-                            targets: [3], 
-                            render: function (data, type, row){
-                                return '<input name="quantity" type="text" class="form-control form-control-xs text-center input-sm" autocomplete="off" value="'+row.quantity+'">';
-                            },                      
-                        },
-                        {
-                            //Product price an total
-                            class: 'text-right',
-                            targets: [2,4],
-                            render: function (data, type, row){
-                              return parseFloat(data).toFixed(2) + ' $';
-                            },
-                        },
-                        {
-                            //Delete button
-                            class: 'text-center',
-                            targets: [-1],
-                            orderable: false,
-                            render: function (data, type, row){
-                                return '<a rel="delete" type="button" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Delete product"> <i class="fas fa-trash-alt fa-xs"></i> </a>';
-                            },
-                        },
-
-                    ],
-                    rowCallback(row, data, displayNun, displayIndex, dataIndex){
-                        $(row).find(("input[name='quantity']")).TouchSpin({
-                            min: 1,
-                            max: 100, //Máximo de acuerdo al stock de cada producto
-                            step: 1,
-                            decimals: 0,
-                            boostat: 1,
-                            maxboostedstep: 3,
-                            postfix: ''
-                        });
-                    },
-                })
-                
-                // IDs de productos ya seleccionados para exlcuir en la busqueda
-                //console.log("this.traer_ids()");
-                //console.log(this.traer_ids());
-                
-            },
-        };
 
         // Tables Events
         $('#table_products tbody').on('click', 'a[rel="delete"]', function () {
@@ -469,5 +470,70 @@
             return option;
         }
 
+        // Send the sale via ajax
+        
+        $('.saleForm').on('submit', function (e) {  
+            e.preventDefault();
+            // Only allow to send if we have at least one product
+            if (sale.items.products.length === 0 ) {
+                Swal.fire({
+                    title: 'The sale must have at least 1 product',
+                    text: 'Search a product and add it to the sale',
+                    icon: 'warning',
+                });
+                return false;
+            };
+            
+            // Agregamos los datos faltantes al objeto sales
+            sale.items.customer = $('select[name="customer"]').val();
+            console.log("Customer: " + sale.items.customer)
+            sale.items.sub_total = $('input[name="sub_total"]').val(); 
+            sale.items.grand_total = $('input[name="grand_total"]').val();
+            sale.items.tax_amount = $('input[name="tax_amount"]').val(); 
+            sale.items.tax_percentage = $('input[name="tax_percentage"]').val();
+            sale.items.amount_payed = $('input[name="amount_payed"]').val(); 
+            sale.items.amount_change = roundTo($('input[name="amount_payed"]').val() - $('input[name="grand_total"]').val(), 2); 
+
+            console.log("Sale:")
+            console.log(sale.items)
+
+            // Validate the csrf_token
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+            function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            $.ajax({
+                url: "{% url 'sales:sales_add' %}",
+                type: "POST",
+                // We need to convert the JS object sale to string
+                data: JSON.stringify(sale.items), 
+                datatype: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log("Ajax OK")
+                },
+                error: function (error) {
+                    console.log("Ajax error");
+                    console.log(error);
+                },
+            }).done(function (data){
+                console.log ("Ajax Done");
+            }).fail(function (data, jqXHR, textStatus, errorThrown){
+                console.log ("Ajax Fail");
+                alert(textStatus + ':' + errorThrown);
+            });
+            
+        });
+        
 </script>
 {% endblock javascripts %}

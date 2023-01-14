@@ -1,11 +1,11 @@
 from django.db import models
-from django.utils import timezone
+import django.utils.timezone
 from customers.models import Customer
 from products.models import Product
 
 
 class Sale(models.Model):
-    date_added = models.DateTimeField(default=timezone.now)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
     customer = models.ForeignKey(
         Customer, models.DO_NOTHING, db_column='customer')
     sub_total = models.FloatField(default=0)
@@ -19,7 +19,7 @@ class Sale(models.Model):
         db_table = 'Sales'
 
     def __str__(self) -> str:
-        return self.code
+        return "Sale ID: " + str(self.id) + " | Grand Total: " + str(self.grand_total)
 
 
 class SaleDetail(models.Model):
