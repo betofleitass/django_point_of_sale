@@ -295,13 +295,40 @@
 
         // Tables Events
         $('#table_products tbody').on('click', 'a[rel="delete"]', function () {
-            // When a product is deleted
+                // When a product is deleted
+                
                 // Row variable of the table
                 var tr = tblProducts.cell($(this).closest('td, li')).index();
-                // Delete the product
-                sale.items.products.splice(tr.row, 1);
-                //List the table again
-                sale.list_product();
+                product_name = (tblProducts.row(tr.row).data().name)
+
+                Swal.fire({
+                    customClass: {
+                        confirmButton: 'ml-3 btn btn-danger',
+                        cancelButton: 'btn btn-info'
+                    },
+                    buttonsStyling: false,
+                    title: "Are you sure you want to delete this product from the sale?",
+                    text: product_name,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true,
+
+                }).then((result) => {
+                    // Si se confirma
+                    if (result.isConfirmed) {
+                        
+                        // Delete the product
+                        sale.items.products.splice(tr.row, 1);
+                        //List the table again
+                        sale.list_product();
+                        Swal.fire('The product was eliminated!', '', 'success')
+                    };
+                })
+
+
+
             }).on('change keyup', 'input[name="quantity"]', function(){
                 // When a product changes is quantity
                 var quantity = parseInt($(this).val());
