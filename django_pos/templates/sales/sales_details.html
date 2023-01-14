@@ -1,0 +1,151 @@
+{% extends "pos/base.html" %}
+{% load static %}
+<!-- Page title  -->
+{% block title %}Sale details{% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<!-- Datatables -->
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css ' %}" rel="stylesheet">
+<!--Select2 CSS-->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+<!--Bootstrap Touchspin-->
+<link rel="stylesheet" href="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.css' %}">
+{% endblock stylesheets %}
+
+<!-- Page Heading -->
+{% block heading %}Sale ID: {{sale.id}}, details{% endblock heading %}
+
+<!-- Page content  -->
+{% block content %}
+<!--Go back-->
+<div class="row ml-0 mb-3">
+    <a href="{% url 'sales:sales_list' %}">
+        <button type="button" class="btn btn-info font-weight-bold">
+            <i class="fas fa-long-arrow-alt-left mr-2"></i>
+            Go back
+        </button>
+    </a>
+</div>
+
+<!--Sale products and details-->
+<form action="{% url 'sales:sales_add' %}" class="saleForm" method="post">
+    <div class="row mt-3">
+        <div class="card col-md-12">
+            <div class="card-body ml-0">
+                <div class="row">
+                    <!--Left column-->
+                    <div class="col-md-9 pl-0">
+                        <div class="card card-secondary">
+                            <div class="card-header">Sale products</div>
+                            
+                            <div class="card-body">
+                                <!--Products table-->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover text-nowrap" id="table_products">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                        <tbody>
+                                            {% for detail in details %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td>{{detail.product.name}}</td>
+                                                <td>{{detail.price}}</td>
+                                                <td class="text-center">{{detail.quantity}}</td>
+                                                <td>{{detail.total_detail}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--End Products table-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Left column-->
+
+                    <!--Righ column-->
+                    <div class="col-md-3 pr-0">
+                        <div class="card card-secondary">
+                            <div class="card-header">Sale details</div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="customer">Customer</label>
+                                    <select name="customer" class="form-control" id="searchbox_customers" disabled readonly>
+                                        <option value="{{sale.customer.id}}">{{sale.customer.get_full_name}}</option>
+                                    </select>
+                                <div class="form-group mt-4">
+                                    <label>Subtotal</label>
+                                    <div class="input-group">
+                                        <input name="sub_total" class="form-control" value="{{sale.sub_total}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tax Inclusive (%)</label>
+                                    <div class="input-group">
+                                        <input name="tax_percentage" class="form-control" value="{{sale.tax_percentage}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tax Amount</label>
+                                    <div class="input-group">
+                                        <input name="tax_amount" class="form-control" value="{{sale.tax_amount}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Grand Total</label>
+                                    <div class="input-group">
+                                        <input name="grand_total" class="form-control" value="{{sale.grand_total}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount payed</label>
+                                    <div class="input-group">
+                                        <input name="amount_payed" class="form-control" value="{{sale.amount_payed}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--End card-body-->
+                    </div>
+                    <!--End Right column-->
+                </div>
+                <!--End row-->
+            </div>
+            <!--End card-body-->
+        </div>
+
+    </div>
+</form>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Datatables -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<!--Select2-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+<!--Bootstrap Touchspin-->
+<script src="{% static 'assets/bootstrap-touchspin-master/src/jquery.bootstrap-touchspin.js' %}"></script>
+<!--Sweet Alert-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.15/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    
+// Products datatable
+
+tblProducts = $('#table_products').DataTable({
+});
+                    
+</script>
+{% endblock javascripts %}

@@ -70,3 +70,29 @@ def SalesAddView(request):
                 return redirect('sales:sales_list')
 
     return render(request, "sales/sales_add.html", context=context)
+
+
+@login_required(login_url="/accounts/login/")
+def SalesDetailsView(request, sale_id):
+    """
+    Args:
+        sale_id: ID of the sale to view
+    """
+    try:
+        # Get tthe sale
+        sale = Sale.objects.get(id=sale_id)
+
+        # Get the sale details
+        details = SaleDetail.objects.filter(sale=sale)
+
+        context = {
+            "active_icon": "sales",
+            "sale": sale,
+            "details": details,
+        }
+        return render(request, "sales/sales_details.html", context=context)
+    except Exception as e:
+        messages.success(
+            request, 'There was an error getting the sale!', extra_tags="danger")
+        print(e)
+        return redirect('sales:sales_list')
