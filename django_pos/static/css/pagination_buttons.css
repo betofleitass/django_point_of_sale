@@ -1,0 +1,8 @@
+.paginate_button {
+    margin-left: 1%;
+    margin-top: 0;
+}
+
+.dataTables_filter input {
+    border-radius: 5px;
+}

@@ -65,14 +65,16 @@ def SalesAddView(request):
                         **detail_attributes)
                     sale_detail_new.save()
 
+                print("Sale saved")
+
                 messages.success(
                     request, 'Sale created succesfully!', extra_tags="success")
-                return redirect('sales:sales_list')
+
             except Exception as e:
                 messages.success(
                     request, 'There was an error during the creation!', extra_tags="danger")
-                print(e)
-                return redirect('sales:sales_list')
+
+        return redirect('sales:sales_list')
 
     return render(request, "sales/sales_add.html", context=context)
 
