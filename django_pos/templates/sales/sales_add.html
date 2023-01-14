@@ -473,7 +473,6 @@
         // Send the sale via ajax
         
         $('.saleForm').on('submit', function (e) {  
-            e.preventDefault();
             // Only allow to send if we have at least one product
             if (sale.items.products.length === 0 ) {
                 Swal.fire({

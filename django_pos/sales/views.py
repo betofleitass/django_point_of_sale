@@ -15,7 +15,7 @@ def is_ajax(request):
 def SalesListView(request):
     context = {
         "active_icon": "sales",
-        "sales": Customer.objects.all()
+        "sales": Sale.objects.all()
     }
     return render(request, "sales/sales.html", context=context)
 
@@ -67,8 +67,8 @@ def SalesAddView(request):
                 messages.success(
                     request, 'There was an error during the creation!', extra_tags="danger")
                 print(e)
-                return redirect('sales:sales_add')
+                return redirect('sales:sales_list')
 
-        return redirect('sales:sales_add')
+        return redirect('sales:sales_list')
 
     return render(request, "sales/sales_add.html", context=context)

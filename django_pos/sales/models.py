@@ -21,6 +21,10 @@ class Sale(models.Model):
     def __str__(self) -> str:
         return "Sale ID: " + str(self.id) + " | Grand Total: " + str(self.grand_total)
 
+    def sum_items(self):
+        details = SaleDetail.objects.filter(sale=self.id)
+        return sum([d.quantity for d in details])
+
 
 class SaleDetail(models.Model):
     sale = models.ForeignKey(
@@ -33,3 +37,6 @@ class SaleDetail(models.Model):
 
     class Meta:
         db_table = 'SaleDetails'
+
+    def __str__(self) -> str:
+        return "Detail ID: " + str(self.id) + " Sale ID: " + str(self.sale.id) + " Quantity: " + str(self.quantity)
