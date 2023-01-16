@@ -56,7 +56,7 @@ This is a project for learning purposes
 
   ` cd django_point_of_sale`
 
-  2. Create a virtual environment :
+  3. Create a virtual environment :
 
   PowerShell:
   ```
@@ -70,9 +70,12 @@ This is a project for learning purposes
   source venv/bin/activate
   ```
 
-  3. Install dependencies:
+  4. Install dependencies:
 
   ` pip install -r requirements.txt`
+  
+  5. Install GTK to create the PDF files:
+  ` https://www.gtk.org/`
   
 ## Run it locally
 
