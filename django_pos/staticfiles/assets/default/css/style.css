@@ -1,0 +1,49 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.loader-wrapper {
+    background: #e9eaefa6 !important;
+}
+
+.mid-large {
+    width: 54vw !important;
+    max-width: unset;
+}
+
+.body-wrapper .main-wrapper .page-wrapper .content-wrapper {
+    min-height: calc(100vh - 84px - 62px) !important;
+}
+
+#POS-field {
+    height: 55vh
+}
+
+.mdc-card.info-card.info-card--primary .card-inner .card-icon-wrapper {
+    background: var(--bs-primary) !important;
+    box-shadow: 0 0 10px 5px rgb(13 110 253 / 28%);
+}
+
+.bg-primary {
+    background: var(--bs-primary) !important;
+}
+
+.text-primary {
+    color: var(--bs-primary) !important
+}
+
+.mdc-drawer {
+    background: unset;
+}
+
+.mdc-drawer__header,
+.mdc-drawer__content {
+    margin: .5em !important;
+}
+
+.mdc-list-item.mdc-drawer-item {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
