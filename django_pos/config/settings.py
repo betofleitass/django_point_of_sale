@@ -14,7 +14,7 @@ from pathlib import Path
 from environ import Env
 
 env = Env()
-env.read_env(env_file='django_pos/.env')
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,10 +44,10 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
-    "customers",
-    "pos",
-    "products",
-    "sales",
+    "django_pos.customers",
+    "django_pos.pos",
+    "django_pos.products",
+    "django_pos.sales",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "django_pos.urls"
+ROOT_URLCONF = "django_pos.config.urls"
 LOGIN_URL = '/accounts/login/'
 # Route defined in authentication/urls.py
 LOGIN_REDIRECT_URL = "authentication:home"
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "django_pos.wsgi.application"
+WSGI_APPLICATION = "django_pos.config.wsgi.application"
 
 
 # Database

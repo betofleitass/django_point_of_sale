@@ -1,4 +1,4 @@
-from django_pos.wsgi import *
+from .config.wsgi import *
 from django_pos import settings
 from django.template.loader import get_template
 from weasyprint import HTML, CSS

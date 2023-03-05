@@ -1,7 +1,7 @@
 from django.db import models
 import django.utils.timezone
-from customers.models import Customer
-from products.models import Product
+from django_pos.customers.models import Customer
+from django_pos.products.models import Product
 
 
 class Sale(models.Model):

@@ -2,11 +2,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django_pos.wsgi import *
-from django_pos import settings
+from ..config.wsgi import *
+from ..config import settings
 from django.template.loader import get_template
-from customers.models import Customer
-from products.models import Product
+from django_pos.customers.models import Customer
+from django_pos.products.models import Product
 from weasyprint import HTML, CSS
 from .models import Sale, SaleDetail
 import json
