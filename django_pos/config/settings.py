@@ -29,8 +29,9 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['djangopointofsale-production.up.railway.app', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['https://djangopointofsale-production.up.railway.app']
 
 # Application definition
 
