@@ -1,3 +1,4 @@
+# from weasyprint import HTML, CSS
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -7,7 +8,6 @@ from ..config import settings
 from django.template.loader import get_template
 from django_pos.customers.models import Customer
 from django_pos.products.models import Product
-from weasyprint import HTML, CSS
 from .models import Sale, SaleDetail
 import json
 
@@ -105,30 +105,30 @@ def SalesDetailsView(request, sale_id):
         return redirect('sales:sales_list')
 
 
-@login_required(login_url="/accounts/login/")
-def ReceiptPDFView(request, sale_id):
-    """
-    Args:
-        sale_id: ID of the sale to view the receipt
-    """
-    # Get tthe sale
-    sale = Sale.objects.get(id=sale_id)
+# @login_required(login_url="/accounts/login/")
+# def ReceiptPDFView(request, sale_id):
+#     """
+#     Args:
+#         sale_id: ID of the sale to view the receipt
+#     """
+#     # Get tthe sale
+#     sale = Sale.objects.get(id=sale_id)
 
-    # Get the sale details
-    details = SaleDetail.objects.filter(sale=sale)
+#     # Get the sale details
+#     details = SaleDetail.objects.filter(sale=sale)
 
-    template = get_template("sales/sales_receipt_pdf.html")
-    context = {
-        "sale": sale,
-        "details": details
-    }
-    html_template = template.render(context)
+#     template = get_template("sales/sales_receipt_pdf.html")
+#     context = {
+#         "sale": sale,
+#         "details": details
+#     }
+#     html_template = template.render(context)
 
-    # CSS Boostrap
-    css_url = os.path.join(
-        settings.BASE_DIR, 'static/css/receipt_pdf/bootstrap.min.css')
+#     # CSS Boostrap
+#     css_url = os.path.join(
+#         settings.BASE_DIR, 'static/css/receipt_pdf/bootstrap.min.css')
 
-    # Create the pdf
-    pdf = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
+#     # Create the pdf
+#     pdf = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
 
-    return HttpResponse(pdf, content_type="application/pdf")
+#     return HttpResponse(pdf, content_type="application/pdf")

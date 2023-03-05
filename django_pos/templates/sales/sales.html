@@ -62,11 +62,11 @@
                                     </button>
                                 </a>
                                 <!--Print receipt-->
-                                <a href="{% url 'sales:sales_receipt_pdf' s.id %}" class="text-decoration-none">
+                                {% comment %} <a href="{% url 'sales:sales_receipt_pdf' s.id %}" class="text-decoration-none">
                                     <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="tooltip" title="View Receipt">
                                         <i class="fas fa-receipt"></i>
                                     </button>
-                                </a>
+                                </a> {% endcomment %}
                             </td>
                         </tr>
                         {% endfor %}
