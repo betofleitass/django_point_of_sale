@@ -2,6 +2,7 @@ asgiref==3.6.0
 autopep8==2.0.1
 Brotli==1.0.9
 cffi==1.15.1
+config==0.5.1
 cssselect2==0.7.0
 Django==4.1.5
 django-environ==0.10.0
@@ -25,4 +26,5 @@ tomli==2.0.1
 tzdata==2022.7
 weasyprint==57.2
 webencodings==0.5.1
+whitenoise==6.4.0
 zopfli==0.2.2
