@@ -1,11 +1,12 @@
 ## Django Point of Sale (POS) 💸
 
+Point of Sale web app for businesses made with Python and Django for learning purposes
+
 <a><img src="https://user-images.githubusercontent.com/95726794/212497770-a3e241e7-0c77-4573-9d22-8f0ae813e958.png" width="70%" heigth="70%"></a>
 <br></br>
 <a><img src="https://user-images.githubusercontent.com/95726794/212497784-80a48617-759c-4415-aa1c-4591b9892c3d.png" width="70%" heigth="70%"></a>
 
 ## Table of Contents:
-- [Description](#description)
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
@@ -13,11 +14,6 @@
 - [Run it locally](#run-it-locally)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Description
-
-Django Point of Sale (POS)
-This is a project for learning purposes
 
 ## Screenshots
 [Click Here](screenshots/README.md)
@@ -56,7 +52,7 @@ This is a project for learning purposes
 
   ` cd django_point_of_sale`
 
-  2. Create a virtual environment :
+  3. Create a virtual environment :
 
   PowerShell:
   ```
@@ -70,9 +66,25 @@ This is a project for learning purposes
   source venv/bin/activate
   ```
 
-  3. Install dependencies:
-
+  4. Install dependencies:  
   ` pip install -r requirements.txt`
+  
+  5.  Update pip and setuptools  
+  ` python -m pip install --upgrade pip setuptools`  
+  
+  6. Install GTK to create the PDF files:  
+   [Official documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)
+  
+  7. If you have Windows (Important)‼:  
+    Add GTK to your path variables, suppose you installed GTK at:   
+    `C:\Program Files\GTK3-Runtime Win64\bin`  
+    That will be your new path variable  
+    
+  - [Tutorial add to path variable](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)  
+
+  - [If you get an error like cannot load library](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#missing-library)  
+  
+  8. Restart your computer
   
 ## Run it locally
 
