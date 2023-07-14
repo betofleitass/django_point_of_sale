@@ -35,8 +35,9 @@ A Point of Sale web app for businesses built with Python and Django for learning
 ## Installation
 
 ### Prerequisites
-- Python 3.x
-- pip package manager
+- [Python 3.x](https://www.python.org/downloads/)
+- [pip package manager](https://pip.pypa.io/en/stable/installation/)
+- [git](https://git-scm.com/downloads)
   
 #### Browser Compatibility Notice: Firefox NOT Supported ‼
 #### Please Use Chrome or Edge Browsers ‼
@@ -74,6 +75,8 @@ A Point of Sale web app for businesses built with Python and Django for learning
   
   7. Windows Users (IMPORTANT)‼:
 
+     Only Windows 11 64-bit is supported ‼
+
      After installing GTK, you need to add it to your system's Path environment variable. Follow these steps:
 
       - Assuming you installed GTK at:
@@ -86,7 +89,7 @@ A Point of Sale web app for businesses built with Python and Django for learning
       - If you encounter an error such as "cannot load library," refer to this documentation for troubleshooting:
         [Missing Library Error](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#missing-library)  
   
-  8. Restart your computer: After completing the steps above, it is essential to restart your computer for the changes to take effect properly. ‼
+  9. Restart your computer: After completing the steps above, it is essential to restart your computer for the changes to take effect properly. ‼
   
 ## Run it locally
 After restarting your computer
