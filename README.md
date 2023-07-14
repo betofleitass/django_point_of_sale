@@ -1,6 +1,6 @@
 ## Django Point of Sale (POS) 💸
 
-Point of Sale web app for businesses made with Python and Django for learning purposes
+A Point of Sale web app for businesses built with Python and Django for learning purposes.
 
 <a><img src="https://user-images.githubusercontent.com/95726794/212497770-a3e241e7-0c77-4573-9d22-8f0ae813e958.png" width="70%" heigth="70%"></a>
 <br></br>
@@ -22,27 +22,24 @@ Point of Sale web app for businesses made with Python and Django for learning pu
 - Login Page with User authentication
 - Dashboard Page with statistics and graphs
 - DataTables with print, copy, to CSV, and to PDF buttons
-- Categories Management (CRUD)
-- Products Management (CRUD)
-- Point of Sale (POS)
-  - Search and add product to list
-  - Calculate automatically the subtotal, grand total, tax amount
-  - Remove product from the list
-  - Update Item Quantity and Recalculate Total
-  - Choose sale customer
-  - Sale validation paid amount and at least one product
+- Categories and Products Management
+- Clients Management
 - Sales Management
-  - List all Sales
-  - View Sale details
-  - Print Sale Receipt
 
 
 ## Tech Stack
 
-- Frontend: HTML, CSS, JavaScript, Boostrap, SweetAlert, DataTables,
-- Backend: Django, Python, Ajax, SQLite, 
+- Frontend: HTML, CSS, JavaScript, Boostrap, SweetAlert, DataTables
+- Backend: Django, Python, Ajax, SQLite 
 
 ## Installation
+
+### Prerequisites
+- Python 3.x
+- pip package manager
+  
+#### Browser Compatibility Notice: Firefox NOT Supported ‼
+#### Please Use Chrome or Edge Browsers ‼
     
   1. Clone or download the repository:
 
@@ -75,34 +72,57 @@ Point of Sale web app for businesses made with Python and Django for learning pu
   6. Install GTK to create the PDF files:  
    [Official documentation](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)
   
-  7. If you have Windows (Important)‼:  
-    Add GTK to your path variables, suppose you installed GTK at:   
-    `C:\Program Files\GTK3-Runtime Win64\bin`  
-    That will be your new path variable  
-    
-  - [Tutorial add to path variable](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)  
+  7. Windows Users (IMPORTANT)‼:
 
-  - [If you get an error like cannot load library](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#missing-library)  
+     After installing GTK, you need to add it to your system's Path environment variable. Follow these steps:
+
+      - Assuming you installed GTK at:
+        `C:\Program Files\GTK3-Runtime Win64\bin`  
+        This will be your new variable that you need to add to Path
+        
+      - Refer to this tutorial for detailed instructions on adding to the Path environment variable:
+        [Tutorial add to the Path enviroment variable](https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/)  
+    
+      - If you encounter an error such as "cannot load library," refer to this documentation for troubleshooting:
+        [Missing Library Error](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#missing-library)  
   
-  8. Restart your computer
+  8. Restart your computer: After completing the steps above, it is essential to restart your computer for the changes to take effect properly. ‼
   
 ## Run it locally
+After restarting your computer
 
 1. Go to the project directory: `cd django_point_of_sale`
 
-2. Make database migrations:  
+2. Activate the virtual enviroment
+
+    PowerShell:
+    ```
+     venv\Scripts\Activate.ps1
+    ```
+    
+    Linux:
+    ```
+    source venv/bin/activate
+    ```
+3. Go to the django_pos folder: `cd django_pos`
+
+4. Make database migrations:  
   `python manage.py makemigrations` and 
   `python manage.py migrate`
 
-3. Create superuser `python manage.py createsuperuser` 
+5. Create superuser `python manage.py createsuperuser` 
   
-   with the following data: `username: admin,
+   with the following data, or with the data you prefer:
+   `username: admin,
     password: admin,
     email: admin@admin`
 
-4. Run the server: `python manage.py runserver`
+7. Run the server: `python manage.py runserver`
 
-5. Open a browser and go to: `http://127.0.0.1:8000/`
+8. Open a browser and go to: `http://127.0.0.1:8000/`
+
+9. Log In with your superuser credentials.
+    
 
 ## Contributing
 
