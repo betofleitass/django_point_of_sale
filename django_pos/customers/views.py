@@ -97,10 +97,6 @@ def CustomersUpdateView(request, customer_id):
                                extra_tags="warning")
                 return redirect('customers:customers_add')
 
-            # Get the customer to update
-            customer = Customer.objects.filter(
-                id=customer_id).update(**attributes)
-
             customer = Customer.objects.get(id=customer_id)
 
             messages.success(request, '¡Customer: ' + customer.get_full_name() +
