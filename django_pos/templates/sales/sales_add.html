@@ -473,7 +473,7 @@
         // Send the sale via ajax
         
         $('.saleForm').on('submit', function (e) {  
-            // Only allow to send if we have at least one product
+            // Only allow sending if we have at least one product
             if (sale.items.products.length === 0 ) {
                 Swal.fire({
                     title: 'The sale must have at least 1 product',
@@ -483,10 +483,10 @@
                 return false;
             };
             
-            // Only allow to send if the payed amount is equal or greater than the total
-            if ($('[name="amount_payed"]').val() >= $('[name="grand_total"]').val()) {
+            // Only allow sending if the paid amount is equal or greater than the total
+            if ($('[name="amount_payed"]').val() < $('[name="grand_total"]').val()) {
                 Swal.fire({
-                    title: 'Payable Amount is lower that the Grand Total',
+                    title: 'Payable Amount is lower than the Grand Total',
                     icon: 'warning',
                 });
                 return false;

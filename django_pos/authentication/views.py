@@ -21,7 +21,7 @@ def login_view(request):
             else:
                 msg = 'Invalid username or password!'
         else:
-            msg = 'An error ocurred!.'
+            msg = 'An error occurred!.'
 
     return render(request, "accounts/login.html", {"form": form, "msg": msg})
 

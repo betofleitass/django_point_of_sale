@@ -5,7 +5,7 @@ from .models import Customer
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersListView(request):
+def customers_list_view(request):
     context = {
         "active_icon": "customers",
         "customers": Customer.objects.all()
@@ -14,13 +14,13 @@ def CustomersListView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersAddView(request):
+def customers_add_view(request):
     context = {
         "active_icon": "customers",
     }
 
     if request.method == 'POST':
-        # Save the POST arguements
+        # Save the POST arguments
         data = request.POST
 
         attributes = {
@@ -41,11 +41,11 @@ def CustomersAddView(request):
             # Create the customer
             new_customer = Customer.objects.create(**attributes)
 
-            # If it doesn't exists save it
+            # If it doesn't exist save it
             new_customer.save()
 
             messages.success(request, 'Customer: ' + attributes["first_name"] + " " +
-                             attributes["last_name"] + ' created succesfully!', extra_tags="success")
+                             attributes["last_name"] + ' created successfully!', extra_tags="success")
             return redirect('customers:customers_list')
         except Exception as e:
             messages.success(
@@ -57,9 +57,10 @@ def CustomersAddView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersUpdateView(request, customer_id):
+def customers_update_view(request, customer_id):
     """
     Args:
+        request:
         customer_id : The customer's ID that will be updated
     """
 
@@ -80,7 +81,7 @@ def CustomersUpdateView(request, customer_id):
 
     if request.method == 'POST':
         try:
-            # Save the POST arguements
+            # Save the POST arguments
             data = request.POST
 
             attributes = {
@@ -112,9 +113,10 @@ def CustomersUpdateView(request, customer_id):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersDeleteView(request, customer_id):
+def customers_delete_view(request, customer_id):
     """
     Args:
+        request:
         customer_id : The customer's ID that will be deleted
     """
     try:

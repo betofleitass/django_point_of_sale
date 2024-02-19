@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -17,7 +19,7 @@ def is_ajax(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesListView(request):
+def sales_list_view(request):
     context = {
         "active_icon": "sales",
         "sales": Sale.objects.all()
@@ -26,7 +28,7 @@ def SalesListView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesAddView(request):
+def sales_add_view(request):
     context = {
         "active_icon": "sales",
         "customers": [c.to_select2() for c in Customer.objects.all()]
@@ -34,7 +36,7 @@ def SalesAddView(request):
 
     if request.method == 'POST':
         if is_ajax(request=request):
-            # Save the POST arguements
+            # Save the POST arguments
             data = json.load(request)
 
             sale_attributes = {
@@ -68,7 +70,7 @@ def SalesAddView(request):
                 print("Sale saved")
 
                 messages.success(
-                    request, 'Sale created succesfully!', extra_tags="success")
+                    request, 'Sale created successfully!', extra_tags="success")
 
             except Exception as e:
                 messages.success(
@@ -80,13 +82,14 @@ def SalesAddView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesDetailsView(request, sale_id):
+def sales_details_view(request, sale_id):
     """
     Args:
+        request:
         sale_id: ID of the sale to view
     """
     try:
-        # Get tthe sale
+        # Get the sale
         sale = Sale.objects.get(id=sale_id)
 
         # Get the sale details
@@ -106,12 +109,13 @@ def SalesDetailsView(request, sale_id):
 
 
 @login_required(login_url="/accounts/login/")
-def ReceiptPDFView(request, sale_id):
+def receipt_pdf_view(request, sale_id):
     """
     Args:
+        request:
         sale_id: ID of the sale to view the receipt
     """
-    # Get tthe sale
+    # Get the sale
     sale = Sale.objects.get(id=sale_id)
 
     # Get the sale details
