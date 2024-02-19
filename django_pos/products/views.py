@@ -22,7 +22,7 @@ def CategoriesAddView(request):
     }
 
     if request.method == 'POST':
-        # Save the POST arguements
+        # Save the POST arguments
         data = request.POST
 
         attributes = {
@@ -41,11 +41,11 @@ def CategoriesAddView(request):
             # Create the category
             new_category = Category.objects.create(**attributes)
 
-            # If it doesn't exists save it
+            # If it doesn't exist, save it
             new_category.save()
 
             messages.success(request, 'Category: ' +
-                             attributes["name"] + ' created succesfully!', extra_tags="success")
+                             attributes["name"] + ' created successfully!', extra_tags="success")
             return redirect('products:categories_list')
         except Exception as e:
             messages.success(
@@ -60,6 +60,7 @@ def CategoriesAddView(request):
 def CategoriesUpdateView(request, category_id):
     """
     Args:
+        request:
         category_id : The category's ID that will be updated
     """
 
@@ -81,7 +82,7 @@ def CategoriesUpdateView(request, category_id):
 
     if request.method == 'POST':
         try:
-            # Save the POST arguements
+            # Save the POST arguments
             data = request.POST
 
             attributes = {
@@ -118,6 +119,7 @@ def CategoriesUpdateView(request, category_id):
 def CategoriesDeleteView(request, category_id):
     """
     Args:
+        request:
         category_id : The category's ID that will be deleted
     """
     try:
@@ -152,7 +154,7 @@ def ProductsAddView(request):
     }
 
     if request.method == 'POST':
-        # Save the POST arguements
+        # Save the POST arguments
         data = request.POST
 
         attributes = {
@@ -173,11 +175,11 @@ def ProductsAddView(request):
             # Create the product
             new_product = Product.objects.create(**attributes)
 
-            # If it doesn't exists save it
+            # If it doesn't exist, save it
             new_product.save()
 
             messages.success(request, 'Product: ' +
-                             attributes["name"] + ' created succesfully!', extra_tags="success")
+                             attributes["name"] + ' created successfully!', extra_tags="success")
             return redirect('products:products_list')
         except Exception as e:
             messages.success(
@@ -192,6 +194,7 @@ def ProductsAddView(request):
 def ProductsUpdateView(request, product_id):
     """
     Args:
+        request:
         product_id : The product's ID that will be updated
     """
 
@@ -214,7 +217,7 @@ def ProductsUpdateView(request, product_id):
 
     if request.method == 'POST':
         try:
-            # Save the POST arguements
+            # Save the POST arguments
             data = request.POST
 
             attributes = {
@@ -253,6 +256,7 @@ def ProductsUpdateView(request, product_id):
 def ProductsDeleteView(request, product_id):
     """
     Args:
+        request:
         product_id : The product's ID that will be deleted
     """
     try:
