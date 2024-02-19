@@ -5,26 +5,26 @@ from . import views
 app_name = "products"
 urlpatterns = [
     # List categories
-    path('categories', views.CategoriesListView, name='categories_list'),
+    path('categories', views.categories_list_view, name='categories_list'),
     # Add category
-    path('categories/add', views.CategoriesAddView, name='categories_add'),
+    path('categories/add', views.categories_add_view, name='categories_add'),
     # Update category
     path('categories/update/<str:category_id>',
-         views.CategoriesUpdateView, name='categories_update'),
+         views.categories_update_view, name='categories_update'),
     # Delete category
     path('categories/delete/<str:category_id>',
-         views.CategoriesDeleteView, name='categories_delete'),
+         views.categories_delete_view, name='categories_delete'),
 
     # List products
-    path('', views.ProductsListView, name='products_list'),
+    path('', views.products_list_view, name='products_list'),
     # Add product
-    path('add', views.ProductsAddView, name='products_add'),
+    path('add', views.products_add_view, name='products_add'),
     # Update product
     path('update/<str:product_id>',
-         views.ProductsUpdateView, name='products_update'),
+         views.products_update_view, name='products_update'),
     # Delete product
     path('delete/<str:product_id>',
-         views.ProductsDeleteView, name='products_delete'),
+         views.products_delete_view, name='products_delete'),
     # Get products AJAX
-    path("get", views.GetProductsAJAXView, name="get_products"),
+    path("get", views.get_products_ajax_view, name="get_products"),
 ]

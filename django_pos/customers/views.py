@@ -5,7 +5,7 @@ from .models import Customer
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersListView(request):
+def customers_list_view(request):
     context = {
         "active_icon": "customers",
         "customers": Customer.objects.all()
@@ -14,7 +14,7 @@ def CustomersListView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersAddView(request):
+def customers_add_view(request):
     context = {
         "active_icon": "customers",
     }
@@ -57,7 +57,7 @@ def CustomersAddView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersUpdateView(request, customer_id):
+def customers_update_view(request, customer_id):
     """
     Args:
         request:
@@ -113,7 +113,7 @@ def CustomersUpdateView(request, customer_id):
 
 
 @login_required(login_url="/accounts/login/")
-def CustomersDeleteView(request, customer_id):
+def customers_delete_view(request, customer_id):
     """
     Args:
         request:

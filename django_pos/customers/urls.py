@@ -5,13 +5,13 @@ from . import views
 app_name = "customers"
 urlpatterns = [
     # List customers
-    path('', views.CustomersListView, name='customers_list'),
+    path('', views.customers_list_view, name='customers_list'),
     # Add customer
-    path('add', views.CustomersAddView, name='customers_add'),
+    path('add', views.customers_add_view, name='customers_add'),
     # Update customer
     path('update/<str:customer_id>',
-         views.CustomersUpdateView, name='customers_update'),
+         views.customers_update_view, name='customers_update'),
     # Delete customer
     path('delete/<str:customer_id>',
-         views.CustomersDeleteView, name='customers_delete'),
+         views.customers_delete_view, name='customers_delete'),
 ]

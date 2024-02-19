@@ -19,7 +19,7 @@ def is_ajax(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesListView(request):
+def sales_list_view(request):
     context = {
         "active_icon": "sales",
         "sales": Sale.objects.all()
@@ -28,7 +28,7 @@ def SalesListView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesAddView(request):
+def sales_add_view(request):
     context = {
         "active_icon": "sales",
         "customers": [c.to_select2() for c in Customer.objects.all()]
@@ -82,7 +82,7 @@ def SalesAddView(request):
 
 
 @login_required(login_url="/accounts/login/")
-def SalesDetailsView(request, sale_id):
+def sales_details_view(request, sale_id):
     """
     Args:
         request:
@@ -109,7 +109,7 @@ def SalesDetailsView(request, sale_id):
 
 
 @login_required(login_url="/accounts/login/")
-def ReceiptPDFView(request, sale_id):
+def receipt_pdf_view(request, sale_id):
     """
     Args:
         request:
