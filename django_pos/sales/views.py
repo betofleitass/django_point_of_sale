@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -34,7 +36,7 @@ def SalesAddView(request):
 
     if request.method == 'POST':
         if is_ajax(request=request):
-            # Save the POST arguements
+            # Save the POST arguments
             data = json.load(request)
 
             sale_attributes = {
@@ -68,7 +70,7 @@ def SalesAddView(request):
                 print("Sale saved")
 
                 messages.success(
-                    request, 'Sale created succesfully!', extra_tags="success")
+                    request, 'Sale created successfully!', extra_tags="success")
 
             except Exception as e:
                 messages.success(
@@ -83,10 +85,11 @@ def SalesAddView(request):
 def SalesDetailsView(request, sale_id):
     """
     Args:
+        request:
         sale_id: ID of the sale to view
     """
     try:
-        # Get tthe sale
+        # Get the sale
         sale = Sale.objects.get(id=sale_id)
 
         # Get the sale details
@@ -109,9 +112,10 @@ def SalesDetailsView(request, sale_id):
 def ReceiptPDFView(request, sale_id):
     """
     Args:
+        request:
         sale_id: ID of the sale to view the receipt
     """
-    # Get tthe sale
+    # Get the sale
     sale = Sale.objects.get(id=sale_id)
 
     # Get the sale details
