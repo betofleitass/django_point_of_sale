@@ -20,7 +20,7 @@ def CustomersAddView(request):
     }
 
     if request.method == 'POST':
-        # Save the POST arguements
+        # Save the POST arguments
         data = request.POST
 
         attributes = {
@@ -41,11 +41,11 @@ def CustomersAddView(request):
             # Create the customer
             new_customer = Customer.objects.create(**attributes)
 
-            # If it doesn't exists save it
+            # If it doesn't exist save it
             new_customer.save()
 
             messages.success(request, 'Customer: ' + attributes["first_name"] + " " +
-                             attributes["last_name"] + ' created succesfully!', extra_tags="success")
+                             attributes["last_name"] + ' created successfully!', extra_tags="success")
             return redirect('customers:customers_list')
         except Exception as e:
             messages.success(
@@ -60,6 +60,7 @@ def CustomersAddView(request):
 def CustomersUpdateView(request, customer_id):
     """
     Args:
+        request:
         customer_id : The customer's ID that will be updated
     """
 
@@ -80,7 +81,7 @@ def CustomersUpdateView(request, customer_id):
 
     if request.method == 'POST':
         try:
-            # Save the POST arguements
+            # Save the POST arguments
             data = request.POST
 
             attributes = {
@@ -115,6 +116,7 @@ def CustomersUpdateView(request, customer_id):
 def CustomersDeleteView(request, customer_id):
     """
     Args:
+        request:
         customer_id : The customer's ID that will be deleted
     """
     try:
