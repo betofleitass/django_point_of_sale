@@ -15,7 +15,7 @@ def index(request):
     year = today.year
     monthly_earnings = []
 
-    # Caculate earnings per month
+    # Calculate earnings per month
     for month in range(1, 13):
         earning = Sale.objects.filter(date_added__year=year, date_added__month=month).aggregate(
             total_variable=Coalesce(Sum(F('grand_total')), 0.0, output_field=FloatField())).get('total_variable')
@@ -29,7 +29,7 @@ def index(request):
     # AVG per month
     avg_month = format(sum(monthly_earnings)/12, '.2f')
 
-    # Top selling products
+    # Top-selling products
     top_products = Product.objects.annotate(quantity_sum=Sum(
         'saledetail__quantity')).order_by('-quantity_sum')[:3]
 
